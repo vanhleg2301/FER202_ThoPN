@@ -89,32 +89,33 @@ export default function Companies() {
   const url = "http://example.com/page?name=John&age=30";
   console.log(parseQueryParams(url)); // Output: { name: "John", age: "30" }
 
-
   // 8. 5.Promises
   function getRandomNumber() {
     return new Promise((resolve, reject) => {
-        // Generate a random number between 1 and 10
-        const number = Math.floor(Math.random() * 10) + 1;
+      // Generate a random number between 1 and 10
+      const number = Math.floor(Math.random() * 10) + 1;
 
-        // Check if the number is greater than 5
-        if (number > 5) {
-            resolve(number);
-        } else {
-            reject("Error: Number is less than or equal to 5");
-        }
+      // Check if the number is greater than 5
+      if (number > 5) {
+        resolve(number);
+      } else {
+        reject("Error: Number is less than or equal to 5");
+      }
     });
-}
+  }
 
-// Usage example
-getRandomNumber()
-    .then(result => {
-        console.log(`Random number greater than 5: ${result}`);
+  // Usage example
+  getRandomNumber()
+    .then((result) => {
+      console.log(`Random number greater than 5: ${result}`);
     })
-    .catch(error => {
-        console.log(error);
+    .catch((error) => {
+      console.log(error);
     });
 
-
+    // 9.sort category abc
+    const sortedCompaniesByCategory = [...companies].sort((a, b) => a.category.localeCompare(b.category));
+    console.log("Companies sorted by category:", sortedCompaniesByCategory);
   return (
     <>
       <h1 className='text-center'>Companies</h1>

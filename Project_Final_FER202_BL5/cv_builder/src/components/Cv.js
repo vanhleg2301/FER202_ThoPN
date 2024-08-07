@@ -1,9 +1,10 @@
 import React from 'react'
+import Create from './cvComponents/Create'
 
 export default function Cv() {
   return (
     <>
-    <div>Cv page template</div> 
+    <Create />
     </>
   )
 }

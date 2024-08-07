@@ -61,7 +61,7 @@ export default function Home() {
               justifyContent: "center",
               width: "100%",
             }}>
-            <Button variant='light' as={Link} to='/create'>Create now</Button>
+            <Button variant='light' as={Link} to='/template'>View Template</Button>
           </div>
         ) : (
           <Outlet />

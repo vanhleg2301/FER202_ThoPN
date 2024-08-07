@@ -13,15 +13,6 @@ export default function Header() {
   );
   const navigate = useNavigate();
 
-  const handleCreate = () => {
-    // if (!isLoggedIn) {
-    //   toast.info("Please sign in to create CV", { autoClose: 1222 });
-    //   return;
-    // } else {
-      navigate("/create");
-    // }
-  };
-
   const handleTemplate = () => {
     if (!isLoggedIn) {
       toast.info("Please sign in to create CV", { autoClose: 1222 });
@@ -47,7 +38,6 @@ export default function Header() {
           <Navbar.Collapse id='responsive-navbar-nav'>
             <Nav className='me-auto'>
               <Nav.Link onClick={handleTemplate}>Template</Nav.Link>
-              <Nav.Link onClick={handleCreate}>Create</Nav.Link>
               <NavDropdown title='More' id='collapsible-nav-dropdown'>
                 <NavDropdown.Item href='#blog'>Blog</NavDropdown.Item>
                 <NavDropdown.Item href='#faq'>FAQ</NavDropdown.Item>
