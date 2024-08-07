@@ -1,0 +1,17 @@
+[
+    {
+        "id": "prf192",
+        "title": "Programming Fundamentals",
+        "credit": 3
+    },
+    {
+        "id": "pro192",
+        "title": "Programming Object Oriented",
+        "credit": 3
+    },
+    {
+        "id": "dbi202",
+        "title": "Database Introduction",
+        "credit": 2
+    }
+]

@@ -1,0 +1,27 @@
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensure header is above other elements */
+  background-color: rgba(255, 255, 255, 0); /* Fully transparent background */
+}
+
+.avatar-menu-wrapper {
+  position: relative;
+}
+
+.avatar-menu {
+  display: none;
+  position: absolute;
+  left: 0;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 1000;
+}
+
+.avatar-menu-wrapper:hover .avatar-menu {
+  display: block;
+}
