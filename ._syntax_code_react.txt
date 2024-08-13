@@ -1,0 +1,18 @@
+trc thi 3 hôm sẽ đc gửi project 
+xong npm i ở nhà -> đến trường để làm bài 
+=> nộp file không có nodemodule
+
+npm install -g json-server
+
+
+npx json-server --watch database.json --port 9999
+npx json-server --watch db.json --port 9999
+và
+npm start
+
+
+"scripts": {
+ ...,
+ "start-server": "json-server --watch db.json --port 9999",
+ ...
+}
