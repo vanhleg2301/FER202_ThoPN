@@ -65,10 +65,10 @@ export default function Header() {
                 </div>
               ) : (
                 <>
-                  <Nav.Link as={Link} to='/'>
+                  <Nav.Link as={Link} to='/login'>
                     Sign In
                   </Nav.Link>
-                  <Nav.Link as={Link} to='/signup'>
+                  <Nav.Link as={Link} to='/regis'>
                     Sign Up
                   </Nav.Link>
                 </>

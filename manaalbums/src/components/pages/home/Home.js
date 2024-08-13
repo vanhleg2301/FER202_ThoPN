@@ -30,6 +30,8 @@ export default function Home() {
   const [selectedAlbumId, setSelectedAlbumId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [newComment, setNewComment] = useState("");
+  const [newRating, setNewRating] = useState(1); // Default rating
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -150,6 +152,41 @@ export default function Home() {
     setCurrentPage(page);
   };
 
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedPhoto) return;
+
+    try {
+      // Replace with actual user ID from your authentication system
+      const userId = 1;
+
+      await axios.post("http://localhost:9999/comments", {
+        photoId: selectedPhoto.id,
+        userId,
+        text: newComment,
+        rate: newRating,
+      });
+      // Clear form inputs
+      setNewComment("");
+      setNewRating(1);
+
+      // Refresh comments
+      const response = await axios.get(
+        `http://localhost:9999/comments?photoId=${selectedPhoto.id}`
+      );
+      const updatedComments = response.data.map((comment) => {
+        const user = users.find((user) => user?.userId === comment?.userId);
+        return {
+          ...comment,
+          username: user ? user?.name : "Unknown User",
+        };
+      });
+      setComments(updatedComments);
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  };
+
   return (
     <Container fluid className='mt-4'>
       <Row>
@@ -234,8 +271,8 @@ export default function Home() {
                           (comment) => comment?.photoId === photo?.id
                         ).length
                       }{" "}
-                      <i class='bi bi-chat-dots'></i> · 0{" "}
-                      <i class='bi bi-share'></i>
+                      <i className='bi bi-chat-dots'></i> · 0{" "}
+                      <i className='bi bi-share'></i>
                     </Card.Text>
                   </Card.Body>
                   <Card.Footer>
@@ -243,9 +280,7 @@ export default function Home() {
                       <Col>
                         <Button
                           onClick={() => handleLike(photo?.id)}
-                          variant={
-                            likedPhotos[photo?.id] ? "primary" : "light"
-                          }
+                          variant={likedPhotos[photo?.id] ? "primary" : "light"}
                           className='w-100 custom-button'
                           style={{ borderRadius: "3px" }}>
                           {likedPhotos[photo?.id] ? "Liked" : "Like"}
@@ -331,14 +366,38 @@ export default function Home() {
               )}
             </Modal.Body>
             <Modal.Footer>
-              <Form.Control
-                type='text'
-                placeholder='Add a comment...'
-                // You can handle the new comment input here
-              />
-              <Button variant='primary' onClick={handleClose}>
-                Close
-              </Button>
+              <Form onSubmit={handleCommentSubmit} className='w-100'>
+                <Form.Group controlId='commentText'>
+                  <Form.Control
+                    as='textarea'
+                    rows={3}
+                    placeholder='Add a comment...'
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group controlId='commentRating'>
+                  <Form.Control
+                    as='select'
+                    value={newRating}
+                    onChange={(e) => setNewRating(Number(e.target.value))}>
+                    <option value={1}>1 Star</option>
+                    <option value={2}>2 Stars</option>
+                    <option value={3}>3 Stars</option>
+                    <option value={4}>4 Stars</option>
+                    <option value={5}>5 Stars</option>
+                  </Form.Control>
+                </Form.Group>
+                <Button type='submit' variant='primary'>
+                  Post Comment
+                </Button>
+                <Button
+                  variant='secondary'
+                  onClick={handleClose}
+                  className='ms-2'>
+                  Close
+                </Button>
+              </Form>
             </Modal.Footer>
           </Col>
         </Row>
