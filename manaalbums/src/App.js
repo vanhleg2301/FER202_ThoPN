@@ -24,7 +24,7 @@ function App() {
             <Route path='/' element={<Home />} />{" "}
             <Route path='/auth/login' element={<Login />} />
             <Route path='/auth/regis' element={<Regis />} />
-            <Route path='/auth/active-code/:key' element={<ActiveCode />} />
+            <Route path='/auth/active-code/:activeCode' element={<ActiveCode />} />
             <Route path='/auth/forgot' element={<Forgot />} />
             <Route path='/auth/profile' element={<Profile />} />
             <Route path='/album' element={<Album />} />

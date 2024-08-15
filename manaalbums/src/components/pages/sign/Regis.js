@@ -3,19 +3,27 @@ import { Col, Row, Card, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { encryptPassword } from "../../../constants/key";
+import { encrypt } from "../../../constants/key";
 import { sendActivationEmail } from "./mail";
 
 export default function Regis() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // Clear previous errors
+    setNameError("");
+    setEmailError("");
+    setPasswordError("");
 
     try {
       // Fetch the last user ID to determine the next ID
@@ -24,25 +32,18 @@ export default function Regis() {
 
       // Check if the user already exists
       const userNameExists = users?.some((u) => u?.name === name);
-
       const userEmailExists = users?.some(
         ({ account }) => account?.email === email
       );
 
       if (userNameExists) {
-        toast.error("A user with this name already exists.", {
-          autoClose: 1000,
-          position: "bottom-right",
-        });
+        setNameError("A user with this name already exists.");
         setLoading(false);
         return;
       }
 
       if (userEmailExists) {
-        toast.error("A user with this email already exists.", {
-          autoClose: 1000,
-          position: "bottom-right",
-        });
+        setEmailError("A user with this email already exists.");
         setLoading(false);
         return;
       }
@@ -51,11 +52,11 @@ export default function Regis() {
       const nextUserId = lastUser ? lastUser?.userId + 1 : 1;
 
       // Encrypt password
-      const encryptedPassword = encryptPassword(password);
+      const encryptedPassword = encrypt(password);
 
       // Generate activation code
       const activeCode = Math.random().toString(36).substring(2);
-      const encryptedActiveCode = encryptPassword(activeCode);
+      const encryptedActiveCode = encrypt(activeCode);
 
       // Send registration data to the backend
       await axios.post("http://localhost:9999/users", {
@@ -115,8 +116,12 @@ export default function Regis() {
                       placeholder='Enter your name'
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      isInvalid={!!nameError}
                       required
                     />
+                    {nameError && (
+                      <Form.Text className='text-danger'>{nameError}</Form.Text>
+                    )}
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
@@ -126,8 +131,12 @@ export default function Regis() {
                       placeholder='Enter your email'
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      isInvalid={!!emailError}
                       required
                     />
+                    {emailError && (
+                      <Form.Text className='text-danger'>{emailError}</Form.Text>
+                    )}
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
@@ -137,15 +146,20 @@ export default function Regis() {
                       placeholder='Enter your password'
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      isInvalid={!!passwordError}
                       required
                     />
+                    {passwordError && (
+                      <Form.Text className='text-danger'>{passwordError}</Form.Text>
+                    )}
                   </Form.Group>
 
                   <Button
                     variant='primary'
                     type='submit'
                     className='w-100'
-                    disabled={loading}>
+                    disabled={loading}
+                  >
                     {loading ? "Registering..." : "Register"}
                   </Button>
                 </Form>
