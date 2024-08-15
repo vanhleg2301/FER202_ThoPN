@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { encryptPassword } from "../../../constants/key";
+import { sendActivationEmail } from "./mail";
 
 export default function Regis() {
   const [name, setName] = useState("");
@@ -22,9 +23,7 @@ export default function Regis() {
       const users = response?.data || [];
 
       // Check if the user already exists
-      const userNameExists = users?.some(
-        (u) => u?.name === name
-      );
+      const userNameExists = users?.some((u) => u?.name === name);
 
       const userEmailExists = users?.some(
         ({ account }) => account?.email === email
@@ -32,8 +31,8 @@ export default function Regis() {
 
       if (userNameExists) {
         toast.error("A user with this name already exists.", {
-          autoClose: 1000, // Closes the toast after 5 seconds
-          position: "bottom-right", // Position the toast at the top-right corner
+          autoClose: 1000,
+          position: "bottom-right",
         });
         setLoading(false);
         return;
@@ -41,8 +40,8 @@ export default function Regis() {
 
       if (userEmailExists) {
         toast.error("A user with this email already exists.", {
-          autoClose: 1000, // Closes the toast after 5 seconds
-          position: "bottom-right", // Position the toast at the top-right corner
+          autoClose: 1000,
+          position: "bottom-right",
         });
         setLoading(false);
         return;
@@ -50,17 +49,18 @@ export default function Regis() {
 
       const lastUser = users[users?.length - 1];
       const nextUserId = lastUser ? lastUser?.userId + 1 : 1;
-      const newId = nextUserId;
 
-      // Generate a unique activation code
+      // Encrypt password
       const encryptedPassword = encryptPassword(password);
+
+      // Generate activation code
       const activeCode = Math.random().toString(36).substring(2);
       const encryptedActiveCode = encryptPassword(activeCode);
 
       // Send registration data to the backend
       await axios.post("http://localhost:9999/users", {
-        id: newId, // Use newId as the unique identifier
-        userId: nextUserId, // Incremented userId
+        id: nextUserId,
+        userId: nextUserId,
         name,
         account: {
           email,
@@ -75,14 +75,24 @@ export default function Regis() {
         },
       });
 
-      alert(
-        "Registration successful! Please check your email to activate your account."
-      );
-      navigate("/auth/login");
-      // Redirect or clear form
+      // Send activation email
+      sendActivationEmail(email, activeCode);
+
+      toast.success("Registration successful! Check your email for the activation code.", {
+        autoClose: 2000,
+        position: "bottom-right",
+      });
+
+      // Redirect to another page or clear form fields
+      setTimeout(() => {
+        navigate("/auth/login");
+      }, 2000);
     } catch (error) {
       console.error("Error registering user:", error);
-      alert("An error occurred during registration.");
+      toast.error("An error occurred during registration.", {
+        autoClose: 2000,
+        position: "bottom-right",
+      });
     } finally {
       setLoading(false);
     }

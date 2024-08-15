@@ -12,17 +12,19 @@ import Album from "./components/pages/album/Album";
 import ErrorPage from "./components/pages/error/ErrorPage";
 import AlbumPhoto from "./components/pages/album/AlbumPhoto";
 import ChatRoom from "./components/pages/chat/ChatRoom";
+import ActiveCode from "./components/pages/sign/ActiveCode";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path='*' element={<ErrorPage />} />
+          <Route element={<ErrorPage />} />
           <Route element={<Layout />}>
             <Route path='/' element={<Home />} />{" "}
             <Route path='/auth/login' element={<Login />} />
             <Route path='/auth/regis' element={<Regis />} />
+            <Route path='/auth/active-code/:key' element={<ActiveCode />} />
             <Route path='/auth/forgot' element={<Forgot />} />
             <Route path='/auth/profile' element={<Profile />} />
             <Route path='/album' element={<Album />} />

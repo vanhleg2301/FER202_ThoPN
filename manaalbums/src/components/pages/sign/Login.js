@@ -33,9 +33,9 @@ export default function Login() {
             name: user?.name,
             account: {
               email: user?.account?.email,
-              password: user?.account?.password, 
-              activeCode: user?.account?.activeCode,
-              isActive: user?.account?.isActive,
+              // password: user?.account?.password, 
+              // activeCode: user?.account?.activeCode,
+              // isActive: user?.account?.isActive,
             },
             address: {
               street: user?.address?.street,

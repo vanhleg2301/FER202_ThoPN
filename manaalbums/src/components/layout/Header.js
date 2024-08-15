@@ -22,13 +22,13 @@ export default function Header() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />
         <Navbar.Collapse id='responsive-navbar-nav'>
-          {isLoggedIn && (
+          {/*isLoggedIn && (
             <div className="mr-2">
               <Nav.Link as={Link} to='/chat'>
                 Chat
               </Nav.Link>
             </div>
-          )}
+          )*/}
           {isLoggedIn && (
             <Nav.Link className="m-2" as={Link} to='/album'>
               Your Album
