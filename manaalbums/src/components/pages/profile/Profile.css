@@ -1,0 +1,21 @@
+/* Profile.css */
+.container {
+    max-width: 800px;
+  }
+  
+  .card {
+    background-color: #f8f9fa;
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  h2 {
+    color: #343a40;
+  }
+  
+  .btn-primary {
+    font-size: 1.25rem;
+  }
+  

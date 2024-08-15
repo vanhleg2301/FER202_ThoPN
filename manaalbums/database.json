@@ -1,189 +1,356 @@
 {
-    "users": [
+  "users": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "John Doe",
+      "account": {
+        "isActive": false
+      },
+      "address": {
+        "street": "190  Nguyen Tuan, Thanh Xuan",
+        "city": "Ha Noi",
+        "zipCode": 10000
+      }
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "name": "Mary Jane",
+      "account": {
+        "email": "u2@gmail.com",
+        "password": "123",
+        "activeCode": "ahbscjabnscoa",
+        "isActive": true
+      },
+      "address": {
+        "street": "109  Duong Lang, Thanh Xuan",
+        "city": "Ha Noi",
+        "zipCode": 10000
+      }
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "name": "ad",
+      "account": {
+        "email": "ad@gmail.com",
+        "password": "U2FsdGVkX185PvRoWy/vSOETn5/eaSuC+j2rfjQZzSI=",
+        "activeCode": "U2FsdGVkX18IwU6Z5ZYf0TEVojC1t8VE0SzOi752b0I=",
+        "isActive": false
+      },
+      "address": {
+        "street": "123",
+        "city": "123",
+        "zipCode": 123
+      }
+    },
+    {
+      "id": 4,
+      "userId": 4,
+      "name": "ad1",
+      "account": {
+        "email": "ad1@gmail.com",
+        "password": "U2FsdGVkX19+OdcNzX7QTbWmP7L+cG9NV1CUfS1V698=",
+        "activeCode": "U2FsdGVkX1/pZmRoC3Bkotcp1vDd4nqLpNPf/jzocHQ=",
+        "isActive": false
+      },
+      "address": {
+        "street": "132",
+        "city": "123",
+        "zipCode": 123
+      }
+    }
+  ],
+  "albums": [
+    {
+      "id": 1,
+      "albumsId": 1,
+      "description": "Summer albums",
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "albumsId": 2,
+      "description": "Spring albums",
+      "userId": 3
+    },
+    {
+      "id": 3,
+      "albumsId": 3,
+      "description": "123",
+      "userId": 3
+    }
+  ],
+  "photos": [
+    {
+      "id": 1,
+      "photoId": 1,
+      "title": "Summer",
+      "images": {
+        "imageId": 1,
+        "url": [
+          "https://via.placeholder.com/600/771796",
+          "https://via.placeholder.com/600/92c952",
+          "https://via.placeholder.com/600/f9cee5",
+          "https://via.placeholder.com/600/24f355"
+        ],
+        "thumbnail": "https://via.placeholder.com/600/771796"
+      },
+      "activity": {
+        "like": 3,
+        "comments": 3,
+        "share": 2
+      },
+      "albumId": 1
+    },
+    {
+      "id": 2,
+      "photoId": 2,
+      "title": "Summer",
+      "images": {
+        "imageId": 2,
+        "url": [
+          "https://via.placeholder.com/600/f66b97",
+          "https://via.placeholder.com/600/d32776",
+          "https://via.placeholder.com/600/f66b97",
+          "https://via.placeholder.com/600/56a8c2"
+        ],
+        "thumbnail": "https://via.placeholder.com/600/f66b97"
+      },
+      "activity": {
+        "like": 3,
+        "comments": 3,
+        "share": 2
+      },
+      "albumId": 1
+    },
+    {
+      "id": 3,
+      "photoId": 3,
+      "title": "Spring",
+      "images": {
+        "imageId": 3,
+        "url": [
+          "https://via.placeholder.com/600/56a8c2",
+          "https://via.placeholder.com/600/771796",
+          "https://via.placeholder.com/600/92c952",
+          "https://via.placeholder.com/600/f9cee5"
+        ],
+        "thumbnail": "https://via.placeholder.com/600/56a8c2"
+      },
+      "activity": {
+        "like": 3,
+        "comments": 3,
+        "share": 2
+      },
+      "albumId": 2
+    },
+    {
+      "id": 4,
+      "photoId": 4,
+      "title": "Spring",
+      "images": {
+        "imageId": 4,
+        "url": [
+          "https://via.placeholder.com/600/771796",
+          "https://via.placeholder.com/600/92c952",
+          "https://via.placeholder.com/600/f9cee5",
+          "https://via.placeholder.com/600/24f355"
+        ],
+        "thumbnail": "https://via.placeholder.com/600/771796"
+      },
+      "activity": {
+        "like": 3,
+        "comments": 3,
+        "share": 2
+      },
+      "albumId": 2
+    },
+    {
+      "id": 5,
+      "photoId": 5,
+      "title": "Spring",
+      "images": {
+        "imageId": 5,
+        "url": [
+          "https://via.placeholder.com/600/f66b97",
+          "https://via.placeholder.com/600/d32776",
+          "https://via.placeholder.com/600/f66b97",
+          "https://via.placeholder.com/600/56a8c2"
+        ],
+        "thumbnail": "https://via.placeholder.com/600/f66b97"
+      },
+      "activity": {
+        "like": 3,
+        "comments": 3,
+        "share": 2
+      },
+      "albumId": 3
+    },
+    {
+      "id": 6,
+      "photoId": 6,
+      "title": "Spring",
+      "images": {
+        "imageId": 6,
+        "url": [
+          "https://via.placeholder.com/600/56a8c2",
+          "https://via.placeholder.com/600/771796",
+          "https://via.placeholder.com/600/92c952",
+          "https://via.placeholder.com/600/f9cee5"
+        ],
+        "thumbnail": "https://via.placeholder.com/600/56a8c2"
+      },
+      "activity": {
+        "like": 3,
+        "comments": 3,
+        "share": 2
+      },
+      "albumId": 3
+    },
+    {
+      "id": 7,
+      "photoId": 7,
+      "title": "123",
+      "images": {
+        "imageId": 7,
+        "url": [
+          "corinne-kutz-tMI2_-r5Nfo-unsplash.jpg",
+          "domenico-loia-hGV2TfOh0ns-unsplash.jpg",
+          "lauren-mancke-xcI7f25UQSs-unsplash.jpg"
+        ],
+        "thumbnails": "corinne-kutz-tMI2_-r5Nfo-unsplash.jpg"
+      },
+      "activity": {
+        "likes": 0,
+        "comments": 0,
+        "shares": 0
+      },
+      "albumId": 3
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "photoId": 1,
+      "userId": 1,
+      "text": "Nice photo",
+      "rate": 4
+    },
+    {
+      "id": 2,
+      "photoId": 2,
+      "userId": 1,
+      "text": "Normal photo",
+      "rate": 2
+    },
+    {
+      "id": 3,
+      "photoId": 3,
+      "userId": 2,
+      "text": "",
+      "rate": 3
+    },
+    {
+      "id": 4,
+      "photoId": 2,
+      "userId": 2,
+      "text": "",
+      "rate": 3
+    },
+    {
+      "photoId": 1,
+      "userId": 1,
+      "text": "hihi",
+      "rate": 2,
+      "id": 5
+    },
+    {
+      "photoId": 1,
+      "userId": 1,
+      "text": "Hahahaha",
+      "rate": 2,
+      "id": 6
+    },
+    {
+      "photoId": 1,
+      "userId": 1,
+      "text": "hi",
+      "rate": 1,
+      "id": 7
+    }
+  ],
+  "likes": [
+    {
+      "photoId": 1,
+      "userIds": [
+        1,
+        2
+      ]
+    },
+    {
+      "photoId": 2,
+      "userIds": [
+        1
+      ]
+    }
+  ],
+  "shares": [
+    {
+      "photoId": 1,
+      "userId": 1,
+      "sharedWithUserIds": [
+        2,
+        3
+      ]
+    },
+    {
+      "photoId": 2,
+      "userId": 2,
+      "sharedWithUserIds": [
+        1,
+        3
+      ]
+    }
+  ],
+  "chats": [
+    {
+      "messages": [
         {
-            "id": 1,
-            "userId": 1,
-            "name": "John Doe",
-            "account": {
-                "isActive": false
-            },
-            "address": {
-                "street": "190  Nguyen Tuan, Thanh Xuan",
-                "city": "Ha Noi",
-                "zipCode": 10000
-            }
+          "userSenderId": 3,
+          "text": "Hello",
+          "timestamp": "2024-08-14T10:00:00Z"
         },
         {
-            "id": 2,
-            "userId": 2,
-            "name": "Mary Jane",
-            "account": {
-                "email": "u2@gmail.com",
-                "password": "123456",
-                "activeCode": "ahbscjabnscoa",
-                "isActive": true
-            },
-            "address": {
-                "street": "109  Duong Lang, Thanh Xuan",
-                "city": "Ha Noi",
-                "zipCode": 10000
-            }
+          "userReceiverId": 4,
+          "text": "Hi, Who the fuck are you?",
+          "timestamp": "2024-08-14T10:01:00Z"
+        },
+        {
+          "userSenderId": 3,
+          "text": "add",
+          "timestamp": "2024-08-14T18:03:32.869Z"
+        },
+        {
+          "userSenderId": 3,
+          "text": "ad2",
+          "timestamp": "2024-08-14T18:08:40.813Z"
+        },
+        {
+          "userSenderId": 3,
+          "text": "ádasd",
+          "timestamp": "2024-08-14T18:08:46.908Z"
+        },
+        {
+          "userSenderId": 3,
+          "text": "ádasd",
+          "timestamp": "2024-08-14T18:08:49.996Z"
         }
-    ],
-    "albums": [
-        {
-            "id": 1,
-            "albumsId": 1,
-            "description": "Summer albums",
-            "userId": 1
-        },
-        {
-            "id": 2,
-            "albumsId": 2,
-            "description": "Spring albums",
-            "userId": 2
-        }
-    ],
-    "photos": [
-        {
-            "id": 1,
-            "photoId": 1,
-            "title": "Summer",
-            "images": {
-                "imageId": 1,
-                "url": [
-                    "https://via.placeholder.com/600/771796",
-                    "https://via.placeholder.com/600/92c952",
-                    "https://via.placeholder.com/600/f9cee5",
-                    "https://via.placeholder.com/600/24f355"
-                ],
-                "thumbnail": "p1-thumb.png"
-            },
-            "albumId": 1
-        },
-        {
-            "id": 2,
-            "photoId": 2,
-            "title": "Summer",
-            "images": {
-                "imageId": 2,
-                "url": [
-                    "https://via.placeholder.com/600/f66b97",
-                    "https://via.placeholder.com/600/d32776",
-                    "https://via.placeholder.com/600/f66b97",
-                    "https://via.placeholder.com/600/56a8c2"
-                ],
-                "thumbnail": "p2-thumb.png"
-            },
-            "albumId": 1
-        },
-        {
-            "id": 3,
-            "photoId": 3,
-            "title": "Spring",
-            "images": {
-                "imageId": 3,
-                "url": [
-                    "https://via.placeholder.com/600/56a8c2",
-                    "https://via.placeholder.com/600/771796",
-                    "https://via.placeholder.com/600/92c952",
-                    "https://via.placeholder.com/600/f9cee5"
-                ],
-                "thumbnail": "p3-thumb.png"
-            },
-            "albumId": 2
-        },
-        {
-            "id": 4,
-            "photoId": 4,
-            "title": "Spring",
-            "images": {
-                "imageId": 4,
-                "url": [
-                    "https://via.placeholder.com/600/771796",
-                    "https://via.placeholder.com/600/92c952",
-                    "https://via.placeholder.com/600/f9cee5",
-                    "https://via.placeholder.com/600/24f355"
-                ],
-                "thumbnail": "p4-thumb.png"
-            },
-            "albumId": 2
-        },
-        {
-            "id": 5,
-            "photoId": 5,
-            "title": "Spring",
-            "images": {
-                "imageId": 5,
-                "url": [
-                    "https://via.placeholder.com/600/f66b97",
-                    "https://via.placeholder.com/600/d32776",
-                    "https://via.placeholder.com/600/f66b97",
-                    "https://via.placeholder.com/600/56a8c2"
-                ],
-                "thumbnail": "p4-thumb.png"
-            },
-            "albumId": 2
-        },
-        {
-            "id": 6,
-            "photoId": 6,
-            "title": "Spring",
-            "images": {
-                "imageId": 6,
-                "url": [
-                    "https://via.placeholder.com/600/56a8c2",
-                    "https://via.placeholder.com/600/771796",
-                    "https://via.placeholder.com/600/92c952",
-                    "https://via.placeholder.com/600/f9cee5"
-                ],
-                "thumbnail": "p4-thumb.png"
-            },
-            "albumId": 2
-        }
-    ],
-    "comments": [
-        {
-            "id": 1,
-            "photoId": 1,
-            "userId": 1,
-            "text": "Nice photo",
-            "rate": 4
-        },
-        {
-            "id": 2,
-            "photoId": 2,
-            "userId": 1,
-            "text": "Normal photo",
-            "rate": 2
-        },
-        {
-            "id": 3,
-            "photoId": 3,
-            "userId": 2,
-            "text": "",
-            "rate": 3
-        },
-        {
-            "id": 4,
-            "photoId": 2,
-            "userId": 2,
-            "text": "",
-            "rate": 3
-        },
-        {
-            "photoId": "1",
-            "userId": 1,
-            "text": "hihi",
-            "rate": 2,
-            "id": 5
-        },
-        {
-            "photoId": 1,
-            "userId": 1,
-            "text": "Hahahaha",
-            "rate": 2,
-            "id": 6
-        }
-    ]
+      ],
+      "senderId": 3,
+      "receiverId": 4,
+      "id": 1
+    }
+  ]
 }

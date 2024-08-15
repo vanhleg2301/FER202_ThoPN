@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 
 export default function Search({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,16 +11,20 @@ export default function Search({ onSearch }) {
   };
 
   return (
-    <div style={{width: '200px'}}>
-      <Form>
-        <Form.Control
-          size='lg'
-          type='text'
-          placeholder='Search by title...'
-          value={searchTerm}
-          onChange={handleChange}
-        />
-      </Form>
-    </div>
+    <Row className='mt-4'>
+      <Col md={12}>
+        <div style={{ width: "200px" }}>
+          <Form>
+            <Form.Control
+              size='lg'
+              type='text'
+              placeholder='Search by title...'
+              value={searchTerm}
+              onChange={handleChange}
+            />
+          </Form>
+        </div>
+      </Col>
+    </Row>
   );
 }

@@ -7,7 +7,9 @@ export default function Layout() {
   return (
     <>
       <Header />
-      <Outlet />
+      <div className='mt-4 mb-4 min-vh-100'>
+        <Outlet />
+      </div>
       <Footer />
     </>
   );

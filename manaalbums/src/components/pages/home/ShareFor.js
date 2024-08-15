@@ -19,7 +19,7 @@ export default function ShareFor() {
   }, []);
 
   return (
-    <Row className="mt-4">
+    <Row className='d-flex justify-content-center align-items-center mt-4'>
       <Col md={12}>
         {users.map((user) => (
           <Button

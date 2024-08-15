@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Button,
-  Row,
-  Col,
-  Container,
-  Modal,
-  Form,
-} from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import ShareFor from "./ShareFor";
 import Pagination from "../../pagination/Pagination";
-import { renderStars } from "../../../util/renderRate";
 import Search from "./Search";
 import Create from "../photo.js/Create";
+import PhotoCard from "./PhotoCard";
+import AlbumFilter from "./AlbumFilter";
+import CommentModal from "./CommentModal";
+import ShareFor from "./ShareFor";
 
-const ITEMS_PER_PAGE = 3; // Define how many items you want per page
+const ITEMS_PER_PAGE = 3;
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
@@ -31,7 +24,7 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [newComment, setNewComment] = useState("");
-  const [newRating, setNewRating] = useState(1); // Default rating
+  const [newRating, setNewRating] = useState(1);
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -66,7 +59,7 @@ export default function Home() {
         const response = await axios.get("http://localhost:9999/comments");
         setCommentsData(response?.data);
       } catch (error) {
-        console.error("Error fetching albums:", error);
+        console.error("Error fetching comments:", error);
       }
     };
 
@@ -83,325 +76,129 @@ export default function Home() {
     }));
   };
 
-  const handleComment = async (photoId) => {
-    const selectedPhotoData = photos.find((photo) => photo?.id === photoId);
-    setSelectedPhoto(selectedPhotoData);
+  const handleComment = (photoId) => {
+    const selectedPhoto = photos?.find((photo) => photo?.id === photoId);
+    const relatedComments = commentsData?.filter(
+      (comment) => comment?.photoId === photoId
+    );
+    setSelectedPhoto(selectedPhoto);
+    setComments(relatedComments);
     setShowModal(true);
-
-    try {
-      const response = await axios.get(
-        `http://localhost:9999/comments?photoId=${photoId}`
-      );
-      const commentsData = response.data;
-
-      const commentsWithUsernames = commentsData.map((comment) => {
-        const user = users.find((user) => user?.userId === comment?.userId);
-        return {
-          ...comment,
-          username: user ? user?.name : "Unknown User",
-        };
-      });
-
-      setComments(commentsWithUsernames);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    }
   };
 
-  const handleClose = () => {
-    setShowModal(false);
-    setComments([]);
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    const newCommentData = {
+      id: commentsData?.length + 1,
+      photoId: selectedPhoto?.id,
+      text: newComment,
+      rate: newRating,
+      username: "Current User", // Replace with actual user data
+    };
+    setCommentsData([...commentsData, newCommentData]);
+    setComments([...comments, newCommentData]);
+    setNewComment("");
+    setNewRating(1);
   };
+
+  const handleClose = () => setShowModal(false);
 
   const handleAlbumSelect = (albumId) => {
     setSelectedAlbumId(albumId);
-    setCurrentPage(1); // Reset to the first page when album is changed
-  };
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    setCurrentPage(1); // Reset to the first page when search query is changed
-  };
-
-  const filteredPhotos = photos.filter(
-    (photo) =>
-      photo?.title?.toLowerCase().startsWith(searchQuery.toLowerCase()) &&
-      (!selectedAlbumId || photo?.albumId === selectedAlbumId)
-  );
-
-  const getAlbumDescription = (albumId) => {
-    const album = albums.find((album) => album?.albumsId === albumId);
-    return album ? album?.description : "Unknown Album";
+    setCurrentPage(1);
   };
 
   const getUserNameByAlbumId = (albumId) => {
+    const album = albums?.find((album) => album?.albumsId === albumId);
+    const user = users?.find((user) => user?.id === album?.userId);
+    return user?.name || "";
+  };
+
+  const getAlbumDescription = (albumId) => {
     const album = albums.find((album) => album?.albumsId === albumId);
-    const user = users.find((user) => user?.userId === album?.userId);
-    return user ? user.name : "Unknown User";
+    return album?.description || "";
   };
 
-  const indexOfLastPhoto = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstPhoto = indexOfLastPhoto - ITEMS_PER_PAGE;
-  const currentPhotos = filteredPhotos?.slice(
-    indexOfFirstPhoto,
-    indexOfLastPhoto
-  );
+  const filteredPhotos = photos
+    .filter(
+      (photo) =>
+        (!selectedAlbumId || photo?.albumId === selectedAlbumId) &&
+        photo?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => new Date(b?.date) - new Date(a?.date));
+
   const totalPages = Math.ceil(filteredPhotos?.length / ITEMS_PER_PAGE);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const handleCommentSubmit = async (e) => {
-    e.preventDefault();
-    if (!selectedPhoto) return;
-
-    try {
-      // Replace with actual user ID from your authentication system
-      const userId = 1;
-
-      await axios.post("http://localhost:9999/comments", {
-        photoId: selectedPhoto.id,
-        userId,
-        text: newComment,
-        rate: newRating,
-      });
-      // Clear form inputs
-      setNewComment("");
-      setNewRating(1);
-
-      // Refresh comments
-      const response = await axios.get(
-        `http://localhost:9999/comments?photoId=${selectedPhoto.id}`
-      );
-      const updatedComments = response.data.map((comment) => {
-        const user = users.find((user) => user?.userId === comment?.userId);
-        return {
-          ...comment,
-          username: user ? user?.name : "Unknown User",
-        };
-      });
-      setComments(updatedComments);
-    } catch (error) {
-      console.error("Error posting comment:", error);
-    }
-  };
+  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+  const currentPhotos = filteredPhotos?.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <Container fluid className='mt-4'>
       <Row>
-        <Col sm={12} md={2}>
-          <div>
-            <Search onSearch={handleSearch} />
-          </div>
-        </Col>
-        <Col sm={12} md={8}>
-          <div className='text-center'>
-            {albums?.map((album) => (
-              <Button
-                key={album?.albumsId}
-                onClick={() => handleAlbumSelect(album?.albumsId)}
-                variant={
-                  selectedAlbumId === album?.albumsId
-                    ? "primary"
-                    : "outline-primary"
-                }
-                className='mx-1'>
-                {album?.description}
-              </Button>
-            ))}
-          </div>
-          <Row>
-            <Col md={12}>
-              <Create />
-            </Col>
-          </Row>
-          <Row>
-            {currentPhotos?.map((photo) => (
-              <Col md={12} key={photo?.id}>
-                <Card className='mt-4 mb-4'>
-                  <Card.Header>
-                    <Row>
-                      <Col xs={1}>
-                        <img
-                          width={50}
-                          height={50}
-                          src='logo192.png'
-                          alt='User Profile'
-                          className='rounded-circle'
-                        />
-                      </Col>
-                      <Col xs={11}>
-                        <div>
-                          <strong>
-                            {getUserNameByAlbumId(photo?.albumId)}
-                          </strong>
-                        </div>
-                        <div
-                          className='text-muted'
-                          style={{ fontSize: "0.9rem" }}>
-                          {getAlbumDescription(photo?.albumId)}
-                        </div>
-                      </Col>
-                    </Row>
-                  </Card.Header>
-                  <Card.Body>
-                    <Card.Title>{photo?.title}</Card.Title>
-                    <Link to={`photo/${photo?.id}`}>
-                      <Card.Img
-                        height={300}
-                        variant='top'
-                        src='logo192.png'
-                        className='my-3'
-                      />
-                    </Link>
+        <Col md={2}></Col>
 
-                    <Card.Text className='text-muted'>
-                      {likedPhotos[photo?.id] ? (
-                        <>
-                          1 <i className='bi bi-heart-fill'></i>
-                        </>
-                      ) : (
-                        <>
-                          0 <i className='bi bi-heart'></i>
-                        </>
-                      )}{" "}
-                      {
-                        commentsData?.filter(
-                          (comment) => comment?.photoId === photo?.id
-                        ).length
-                      }{" "}
-                      <i className='bi bi-chat-dots'></i> · 0{" "}
-                      <i className='bi bi-share'></i>
-                    </Card.Text>
-                  </Card.Body>
-                  <Card.Footer>
-                    <Row className='text-center'>
-                      <Col>
-                        <Button
-                          onClick={() => handleLike(photo?.id)}
-                          variant={likedPhotos[photo?.id] ? "primary" : "light"}
-                          className='w-100 custom-button'
-                          style={{ borderRadius: "3px" }}>
-                          {likedPhotos[photo?.id] ? "Liked" : "Like"}
-                        </Button>
-                      </Col>
-                      <Col>
-                        <Button
-                          onClick={() => handleComment(photo?.id)}
-                          variant='light'
-                          className='w-100 custom-button'
-                          style={{ borderRadius: "0" }}>
-                          Comment
-                        </Button>
-                      </Col>
-                      <Col>
-                        <Button
-                          variant='light'
-                          className='w-100 custom-button'
-                          style={{ borderRadius: "0" }}>
-                          Share
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Card.Footer>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
+        <Col md={8} className='d-flex justify-content-center'>
+          <AlbumFilter
+            albums={albums}
+            selectedAlbumId={selectedAlbumId}
+            handleAlbumSelect={handleAlbumSelect}
           />
+        </Col>
+        <Col md={2}></Col>
+      </Row>
+      <Row>
+        <Col md={2}>
+          <Search onSearch={(query) => setSearchQuery(query)} />
+        </Col>
+        <Col md={8}>
+          <div>
+            <Create />
+          </div>
+
+          <div className='mt-3'>
+            {currentPhotos?.map((photo) => (
+              <PhotoCard
+                key={photo?.id}
+                photo={photo}
+                likedPhotos={likedPhotos}
+                handleLike={handleLike}
+                handleComment={handleComment}
+                getUserNameByAlbumId={getUserNameByAlbumId}
+                getAlbumDescription={getAlbumDescription}
+                commentsData={commentsData}
+              />
+            ))}
+          </div>
         </Col>
         <Col md={2}>
           <ShareFor />
         </Col>
       </Row>
 
-      {/* Open dialog */}
-      <Modal show={showModal} onHide={handleClose}>
-        <Row>
-          <Col md={12}>
-            <Modal.Header closeButton>
-              <Modal.Title>Comments</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {selectedPhoto && (
-                <>
-                  <Card>
-                    <Card.Img
-                      variant='top'
-                      src='logo192.png'
-                      alt={selectedPhoto?.title}
-                    />
-                    <Card.Body>
-                      <Card.Title>{selectedPhoto?.title}</Card.Title>
-                    </Card.Body>
-                  </Card>
-                  <div className='mt-3'>
-                    {comments?.length > 0 ? (
-                      comments?.map((comment) => (
-                        <div
-                          key={comment?.id}
-                          className='mb-3'
-                          style={{
-                            backgroundColor: "lightGray",
-                            borderRadius: "7px",
-                            paddingTop: "20px",
-                            paddingLeft: "20px",
-                            paddingBottom: "5px",
-                          }}>
-                          <strong>{comment?.username}</strong>
-                          <div>{renderStars(comment?.rate)}</div>
-                          <p>{comment?.text}</p>
-                        </div>
-                      ))
-                    ) : (
-                      <p>No comments yet</p>
-                    )}
-                  </div>
-                </>
-              )}
-            </Modal.Body>
-            <Modal.Footer>
-              <Form onSubmit={handleCommentSubmit} className='w-100'>
-                <Form.Group controlId='commentText'>
-                  <Form.Control
-                    as='textarea'
-                    rows={3}
-                    placeholder='Add a comment...'
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group controlId='commentRating'>
-                  <Form.Control
-                    as='select'
-                    value={newRating}
-                    onChange={(e) => setNewRating(Number(e.target.value))}>
-                    <option value={1}>1 Star</option>
-                    <option value={2}>2 Stars</option>
-                    <option value={3}>3 Stars</option>
-                    <option value={4}>4 Stars</option>
-                    <option value={5}>5 Stars</option>
-                  </Form.Control>
-                </Form.Group>
-                <Button type='submit' variant='primary'>
-                  Post Comment
-                </Button>
-                <Button
-                  variant='secondary'
-                  onClick={handleClose}
-                  className='ms-2'>
-                  Close
-                </Button>
-              </Form>
-            </Modal.Footer>
-          </Col>
-        </Row>
-      </Modal>
+      <Row>
+        <Col className='text-center'>
+          <Pagination
+            itemsPerPage={ITEMS_PER_PAGE}
+            totalItems={filteredPhotos?.length}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+          />
+        </Col>
+      </Row>
+
+      <CommentModal
+        users={users}
+        showModal={showModal}
+        handleClose={handleClose}
+        selectedPhoto={selectedPhoto}
+        comments={comments}
+        newComment={newComment}
+        setNewComment={setNewComment}
+        newRating={newRating}
+        setNewRating={setNewRating}
+        handleCommentSubmit={handleCommentSubmit}
+      />
     </Container>
   );
 }

@@ -6,20 +6,33 @@ import PhotoDetail from "./components/pages/photo.js/PhotoDetail";
 import Login from "./components/pages/sign/Login";
 import Regis from "./components/pages/sign/Regis";
 import Profile from "./components/pages/profile/Profile";
+import { AuthProvider } from "./context/Context";
+import Forgot from "./components/pages/sign/Forgot";
+import Album from "./components/pages/album/Album";
+import ErrorPage from "./components/pages/error/ErrorPage";
+import AlbumPhoto from "./components/pages/album/AlbumPhoto";
+import ChatRoom from "./components/pages/chat/ChatRoom";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path='/' element={<Home />} />{" "}
-          <Route path='/login' element={<Login />} />
-          <Route path='/regis' element={<Regis />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/photo/:photoId' element={<PhotoDetail />} />
-        </Route>
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path='*' element={<ErrorPage />} />
+          <Route element={<Layout />}>
+            <Route path='/' element={<Home />} />{" "}
+            <Route path='/auth/login' element={<Login />} />
+            <Route path='/auth/regis' element={<Regis />} />
+            <Route path='/auth/forgot' element={<Forgot />} />
+            <Route path='/auth/profile' element={<Profile />} />
+            <Route path='/album' element={<Album />} />
+            <Route path='/album/:albumId' element={<AlbumPhoto />} />
+            <Route path='/photo/:photoId' element={<PhotoDetail />} />
+            <Route path='/chat' element={<ChatRoom />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

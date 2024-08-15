@@ -1,24 +1,59 @@
 import React, { useState } from "react";
 import { Col, Row, Card, Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { decryptPassword } from "../../../constants/key";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(
-      (u) => u.account.email === email && u.account.password === password
-    );
+    setLoading(true);
 
-    if (user) {
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
-      alert("Login successful!");
-      // Redirect or update UI after successful login
-    } else {
-      alert("Invalid email or password");
+    try {
+      // Fetch user data from API
+      const { data: users } = await axios.get("http://localhost:9999/users");
+      // Find the user with the matching email and password
+      const user = users?.find(
+        ({ account }) =>
+          account?.email === email && decryptPassword(account?.password) === password
+      );
+
+      if (user) {
+        // Store the user details in local storage
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id: user?.id,
+            userId: user?.userId,
+            name: user?.name,
+            account: {
+              email: user?.account?.email,
+              password: user?.account?.password, 
+              activeCode: user?.account?.activeCode,
+              isActive: user?.account?.isActive,
+            },
+            address: {
+              street: user?.address?.street,
+              city: user?.address?.city,
+              zipCode: user?.address?.zipCode,
+            },
+          })
+        );
+        navigate("/"); // Redirect to the home page
+        window.location.reload(); // Refresh the page to update the header
+      } else {
+        alert("Invalid email or password");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      alert("An error occurred while trying to login. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,8 +87,12 @@ export default function Login() {
                   />
                 </Form.Group>
 
-                <Button variant='primary' type='submit' className='w-100'>
-                  Login
+                <Button
+                  variant='primary'
+                  type='submit'
+                  className='w-100'
+                  disabled={loading}>
+                  {loading ? "Logging in..." : "Login"}
                 </Button>
               </Form>
             </Card.Body>

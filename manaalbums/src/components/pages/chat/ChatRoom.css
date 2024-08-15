@@ -1,0 +1,37 @@
+.chat-room {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .sent {
+    border-radius: 20px;
+    background-color: #d4f4dd;
+    text-align: right;
+  }
+  
+  .received {
+    border-radius: 20px;
+    background-color: #f4f4f4;
+    text-align: left;
+  }
+  
+  .message-text {
+    margin: 0;
+  }
+  
+  .message-time {
+    font-size: 0.75rem;
+    color: #888;
+  }
+  
+  button {
+    margin-top: 0.5rem;
+  }
+  
