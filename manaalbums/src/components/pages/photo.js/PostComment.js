@@ -1,8 +1,10 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap"; // Sử dụng Form từ react-bootstrap
+import AuthContext from "../../../context/Context";
 
 export default function PostComment({ photoId, setComments }) {
+  const {user} = useContext(AuthContext)
   const [newComment, setNewComment] = useState("");
   const [newRating, setNewRating] = useState(1); // Default rating
 
@@ -10,10 +12,10 @@ export default function PostComment({ photoId, setComments }) {
     e.preventDefault();
     try {
       // Replace with actual user ID from your authentication system
-      const userId = 1;
+      const userId = user?.userId;
       await axios.post("http://localhost:9999/comments", {
-        photoId,
-        userId,
+        photoId: Number(photoId),
+        userId: userId,
         text: newComment,
         rate: newRating,
       });

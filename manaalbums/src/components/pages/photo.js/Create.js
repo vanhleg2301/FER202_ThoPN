@@ -6,6 +6,7 @@ import CreateModal from "./CreateModal"; // Import the CreateModal component
 
 export default function Create() {
   const [description, setDescription] = useState("");
+  const [tags, setTags] = useState(""); 
   const [showModal, setShowModal] = useState(false); // State to control modal visibility
   const [imagePreviews, setImagePreviews] = useState([]); // State to store image previews
   const [files, setFiles] = useState([]); // State to store file objects
@@ -71,6 +72,7 @@ export default function Create() {
           //   shares: 0,
           // },
           albumId: newAlbumId,
+          tags,
         });
       }
 

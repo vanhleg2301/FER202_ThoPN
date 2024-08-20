@@ -35,7 +35,7 @@
       "id": 3,
       "userId": 3,
       "name": "ad",
-      "avatar": "logo192.png",
+      "avatar": "p1.jpg",
       "account": {
         "email": "ad@gmail.com"
       },
@@ -98,7 +98,7 @@
       "id": 8,
       "userId": 8,
       "name": "va",
-      "avatar": "logo192.png",
+      "avatar": "p1.jpg",
       "account": {
         "email": "anhhcvhe161142@fpt.edu.vn",
         "password": "U2FsdGVkX18ie0dTpss/eczD/RwXaFxQllGZ4QD4NeA=",
@@ -171,7 +171,8 @@
         "comments": 3,
         "share": 2
       },
-      "albumId": 1
+      "albumId": 1,
+      "tags": ["summer", "hot", "new"]
     },
     {
       "id": 2,
@@ -192,7 +193,8 @@
         "comments": 3,
         "share": 2
       },
-      "albumId": 1
+      "albumId": 1,
+      "tags": ["summer", "hot", "new"]
     },
     {
       "id": 3,
@@ -213,7 +215,8 @@
         "comments": 3,
         "share": 2
       },
-      "albumId": 2
+      "albumId": 2,
+      "tags": ["summer", "hot", "new"]
     },
     {
       "id": 4,
@@ -234,7 +237,8 @@
         "comments": 3,
         "share": 2
       },
-      "albumId": 2
+      "albumId": 2,
+      "tags": ["summer", "hot", "new"]
     },
     {
       "id": 5,
@@ -255,7 +259,8 @@
         "comments": 3,
         "share": 2
       },
-      "albumId": 3
+      "albumId": 3,
+      "tags": ["summer", "hot", "new"]
     },
     {
       "id": 6,
@@ -276,7 +281,8 @@
         "comments": 3,
         "share": 2
       },
-      "albumId": 3
+      "albumId": 3,
+      "tags": ["summer", "hot", "new"]
     },
     {
       "id": 7,
@@ -299,7 +305,8 @@
         "comments": 0,
         "shares": 0
       },
-      "albumId": 3
+      "albumId": 3,
+      "tags": ["summer", "hot", "new"]
     },
     {
       "id": 8,
@@ -325,11 +332,8 @@
         "comments": 0,
         "shares": 0
       },
-      "albumId": 4
-    },
-    {
-      "description": "ad",
-      "id": 9
+      "albumId": 4,
+      "tags": ["summer", "hot", "new"]
     },
     {
       "id": 10,
@@ -353,7 +357,8 @@
         ],
         "thumbnail": "p1.jpg"
       },
-      "albumId": 6
+      "albumId": 6,
+      "tags": ["summer", "hot", "new"]
     }
   ],
   "comments": [
@@ -407,18 +412,18 @@
       "id": 7
     },
     {
-      "photoId": "9",
-      "userId": 1,
-      "text": "hi\n",
+      "photoId": 10,
+      "userId": 8,
+      "text": "ádasd",
       "rate": 1,
-      "id": 8
+      "id": 16
     },
     {
-      "photoId": "5",
-      "userId": 1,
-      "text": "",
+      "photoId": 10,
+      "text": "hehee",
       "rate": 1,
-      "id": 9
+      "userId": 8,
+      "id": 17
     }
   ],
   "likes": [
@@ -444,9 +449,17 @@
       "userIds": [
         5,
         6,
-        7
+        7,
+        8
       ],
       "id": 3
+    },
+    {
+      "photoId": 10,
+      "userIds": [
+        8
+      ],
+      "id": 4
     }
   ],
   "shares": [

@@ -8,6 +8,7 @@ export default function AlbumPhotoModal({
   onPrevious,
   onNext,
   selectImage,
+  onDelete,
 }) {
   return (
     <Modal show={show} onHide={onHide} size='lg' centered>
@@ -17,7 +18,11 @@ export default function AlbumPhotoModal({
             &lt;
           </Button>
           <img
-            src={selectImage?.startsWith("http") ? selectImage : `/assets/images/${selectImage}`}
+            src={
+              selectImage?.startsWith("http")
+                ? selectImage
+                : `/assets/images/${selectImage}`
+            }
             alt={photo?.title}
             style={{
               width: "100%",
@@ -33,10 +38,7 @@ export default function AlbumPhotoModal({
       <Modal.Footer
         style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
-          <Button variant='light' className='mr-2'>
-            <i className='bi bi-pencil'></i> Edit
-          </Button>
-          <Button variant='light'>
+          <Button variant='light' onClick={onDelete}>
             <i className='bi bi-trash'></i> Delete
           </Button>
         </div>

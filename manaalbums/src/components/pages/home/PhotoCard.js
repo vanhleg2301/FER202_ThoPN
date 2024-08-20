@@ -22,6 +22,7 @@ export default function PhotoCard({
   getUserNameByAlbumId,
   getAlbumDescription,
   commentsData,
+  albums,
 }) {
   const { user } = useContext(AuthContext);
 
@@ -41,9 +42,23 @@ export default function PhotoCard({
   };
 
   const getAvatarByAlbumId = (albumId) => {
-    const user = users?.find((user) => user?.id === albumId);
-    return user?.avatar;
+    // Find the album with the given albumId
+    const album = albums?.find((album) => album?.albumsId === albumId);
+    console.log("album", album);
+    
+    if (album) {
+      // Find the user associated with the album
+      const user = users?.find((user) => user?.id === album?.userId);
+      console.log("user", user?.avatar);
+      
+      // Return the user's avatar or the default avatar if the user's avatar is undefined or null
+      return user?.avatar || "logo192.png";
+    }
+    
+    // Return the default avatar if the album is not found
+    return "logo192.png";
   };
+  
 
   return (
     <Col md={12}>
@@ -77,7 +92,8 @@ export default function PhotoCard({
               src={
                 photo?.images?.thumbnail.startsWith("http")
                   ? photo?.images?.thumbnail
-                  : "/assets/images/" + (photo?.images?.thumbnail || "logo192.png")
+                  : "/assets/images/" +
+                    (photo?.images?.thumbnail || "logo192.png")
               }
               className='my-3'
             />

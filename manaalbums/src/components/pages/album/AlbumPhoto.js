@@ -109,6 +109,30 @@ export default function AlbumPhoto() {
       });
   };
 
+  const handleDeleteImage = (indexToDelete) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this image?"
+    );
+    if (confirmed) {
+      setPhotos((prevPhotos) =>
+        prevPhotos.map((photo) =>
+          photo.id === photos[currentPhotoIndex].id
+            ? {
+                ...photo,
+                images: {
+                  ...photo.images,
+                  url: photo.images.url.filter(
+                    (_, index) => index !== indexToDelete
+                  ),
+                },
+              }
+            : photo
+        )
+      );
+      handleNext();
+    }
+  };
+
   if (error) {
     return (
       <Container>
@@ -206,6 +230,7 @@ export default function AlbumPhoto() {
         onPrevious={handlePrevious}
         onNext={handleNext}
         selectImage={selectImage}
+        onDelete={() => handleDeleteImage(currentPhotoIndex)}
       />
     </Container>
   );

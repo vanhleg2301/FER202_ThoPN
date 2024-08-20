@@ -143,7 +143,6 @@ export default function Home() {
 
   // Xử lý Comments
   const handleComment = (photoId) => {
-
     const selectedPhoto = photos?.find((photo) => photo?.id === photoId);
     const relatedComments = commentsData?.filter(
       (comment) => comment?.photoId === photoId
@@ -153,19 +152,39 @@ export default function Home() {
     setShowModal(true);
   };
 
-  const handleCommentSubmit = (e) => {
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
+
+    if (!newComment.trim()) {
+      alert("Comment cannot be empty");
+      return;
+    }
+
     const newCommentData = {
-      id: commentsData?.length + 1,
       photoId: selectedPhoto?.id,
       text: newComment,
       rate: newRating,
-      username: "Current User", // Replace with actual user data
+      userId: user?.userId,
     };
-    setCommentsData([...commentsData, newCommentData]);
-    setComments([...comments, newCommentData]);
-    setNewComment("");
-    setNewRating(1);
+
+    try {
+      // Send the new comment to the backend
+      const response = await axios.post(
+        "http://localhost:9999/comments",
+        newCommentData
+      );
+
+      // Update the state with the newly created comment
+      setCommentsData([...commentsData, response.data]);
+      setComments([...comments, response.data]);
+
+      // Clear the form inputs
+      setNewComment("");
+      setNewRating(1);
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+      alert("Failed to submit comment. Please try again.");
+    }
   };
 
   // Xử lý Modal
@@ -244,6 +263,7 @@ export default function Home() {
                 getUserNameByAlbumId={getUserNameByAlbumId}
                 getAlbumDescription={getAlbumDescription}
                 commentsData={commentsData}
+                albums={albums}
               />
             ))}
           </div>
