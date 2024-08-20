@@ -1,16 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Modal,
-  Alert,
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Alert, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import AuthContext from "../../../context/Context";
+import AlbumPhotoModal from "./AlbumPhotoModal";
 
 export default function AlbumPhoto() {
   const { albumId } = useParams();
@@ -19,31 +12,36 @@ export default function AlbumPhoto() {
   const [album, setAlbum] = useState({});
   const [modalShow, setModalShow] = useState(false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [selectImage, setSelectImage] = useState(null);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editDescription, setEditDescription] = useState("");
 
   useEffect(() => {
     if (!user) {
-      // Redirect to login or show a message if the user is not logged in
       setError("Not Found");
       return;
     }
 
-    // Fetch album details
     axios
       .get(`http://localhost:9999/albums/${albumId}`)
       .then((response) => {
         setAlbum(response?.data);
+        setEditDescription(response?.data?.description || "");
       })
       .catch((error) => {
         console.error("Error fetching album details:", error);
         setError("Album not found");
       });
 
-    // Fetch photos for the album
     axios
       .get(`http://localhost:9999/photos?albumId=${albumId}`)
       .then((response) => {
         setPhotos(response?.data);
+        if (response?.data.length > 0) {
+          setSelectImage(response?.data?.images?.url[0]);
+          setCurrentPhotoIndex(0); // Set initial index if photos are available
+        }
       })
       .catch((error) => {
         console.error("Error fetching photos:", error);
@@ -59,13 +57,48 @@ export default function AlbumPhoto() {
   const handleModalClose = () => setModalShow(false);
 
   const handlePrevious = () => {
-    setCurrentPhotoIndex(
-      (prevIndex) => (prevIndex - 1 + photos?.length) % photos?.length
-    );
+    const newIndex =
+      ((currentPhotoIndex + 1) % photos?.images?.url?.length) %
+      photos?.images?.url?.length;
+    setSelectImage(photos?.images?.url[newIndex]);
+    setCurrentPhotoIndex(newIndex);
   };
 
   const handleNext = () => {
-    setCurrentPhotoIndex((prevIndex) => (prevIndex + 1) % photos?.length);
+    const newIndex = (currentPhotoIndex + 1) % photos?.images?.url?.length;
+    setSelectImage(photos?.images?.url[newIndex]);
+    setCurrentPhotoIndex(newIndex);
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditDescription(album?.description || "");
+  };
+
+  const handleDescriptionChange = (e) => {
+    setEditDescription(e.target.value);
+  };
+
+  const handleSaveChanges = () => {
+    axios
+      .put(`http://localhost:9999/albums/${albumId}`, {
+        description: editDescription,
+      })
+      .then(() => {
+        setAlbum((prevAlbum) => ({
+          ...prevAlbum,
+          description: editDescription,
+        }));
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error("Error updating album description:", error);
+        setError("Failed to update description");
+      });
   };
 
   if (error) {
@@ -86,18 +119,19 @@ export default function AlbumPhoto() {
     <Container>
       <Row className='justify-content-center'>
         <Col md={8}>
-          <div className='d-flex justify-content-between align-items-center mb-4'>
-            <h2>{album?.description || "Photos"}</h2>
-          </div>
           <Row>
             {photos?.map((photo, index) => (
               <Col key={photo?.id} md={6} className='mb-4'>
                 <Card>
                   <Card.Img
                     variant='top'
-                    src={photo?.images?.url[0]} // Show the first image
+                    src={
+                      photo?.images?.url[0].startsWith("http")
+                        ? photo?.images?.url[0]
+                        : "/assets/images/" + photo?.images?.url[0]
+                    }
                     alt={photo?.title}
-                    onClick={() => handleImageClick(index)} // Handle image click
+                    onClick={() => handleImageClick(index)}
                     style={{ cursor: "pointer" }}
                   />
                   <Card.Body>
@@ -116,7 +150,7 @@ export default function AlbumPhoto() {
                       </Card.Text>
                     </div>
                     <div className='text-center'>
-                      <Button variant='light' className='mr-2'>
+                      <Button variant='light' className='mr-2' onClick={handleEditClick}>
                         <i className='bi bi-pencil'></i> Edit
                       </Button>
                       <Button variant='light'>
@@ -128,32 +162,39 @@ export default function AlbumPhoto() {
               </Col>
             ))}
           </Row>
+          {isEditing && (
+            <Row className='justify-content-center mt-4'>
+              <Col md={8}>
+                <Form>
+                  <Form.Group controlId='formDescription'>
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                      type='text'
+                      value={editDescription}
+                      onChange={handleDescriptionChange}
+                    />
+                  </Form.Group>
+                  <Button variant='primary' onClick={handleSaveChanges} className='mr-2'>
+                    Save
+                  </Button>
+                  <Button variant='secondary' onClick={handleCancelEdit}>
+                    Cancel
+                  </Button>
+                </Form>
+              </Col>
+            </Row>
+          )}
         </Col>
       </Row>
 
-      {/* Modal for displaying all images */}
-      <Modal show={modalShow} onHide={handleModalClose} size='lg' centered>
-        <Modal.Body>
-          <div className='d-flex justify-content-center align-items-center'>
-            <Button variant='light' onClick={handlePrevious}>
-              &lt;
-            </Button>
-            <img
-              src={photos[currentPhotoIndex]?.images?.url[0]}
-              alt={photos[currentPhotoIndex]?.title}
-              style={{ width: "100%", maxHeight: "80vh", objectFit: "contain" }}
-            />
-            <Button variant='light' onClick={handleNext}>
-              &gt;
-            </Button>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant='secondary' onClick={handleModalClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <AlbumPhotoModal
+        show={modalShow}
+        onHide={handleModalClose}
+        photo={photos[currentPhotoIndex]}
+        onPrevious={handlePrevious}
+        onNext={handleNext}
+        selectImage={selectImage}
+      />
     </Container>
   );
 }

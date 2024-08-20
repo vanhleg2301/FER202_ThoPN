@@ -1,0 +1,53 @@
+/* PhotoDetail.css */
+.custom-carousel .carousel-control-prev-icon,
+.custom-carousel .carousel-control-next-icon {
+  width: 30px;
+  height: 30px;
+  background-color: #007bff; /* Blue background */
+  border-radius: 50%;
+  background-size: 50%;
+}
+
+.custom-carousel .carousel-control-prev-icon {
+  margin-left: -15px;
+}
+
+.custom-carousel .carousel-control-next-icon {
+  margin-right: -15px;
+}
+
+.custom-arrow {
+  background-image: none; /* Remove the default arrow */
+}
+
+.custom-carousel .carousel-control-prev,
+.custom-carousel .carousel-control-next {
+  filter: brightness(1); /* Make sure the arrows are fully visible */
+  opacity: 1;
+}
+
+.custom-carousel .carousel-item img {
+    margin: 0 auto; /* Center the image */
+  }
+  
+  .custom-carousel .carousel-indicators {
+    bottom: -30px; /* Move indicators closer to the images */
+  }
+  
+  .custom-carousel .carousel-item img {
+    border-radius: 8px; /* Slightly round the corners */
+  }
+  
+  .custom-carousel .carousel {
+    width: 50%; /* Set width of the carousel */
+    margin: 0 auto; /* Center the carousel */
+  }
+  
+  .custom-carousel .carousel-item img {
+    transition: transform 0.3s ease-in-out; /* Add smooth hover effect */
+  }
+  
+  .custom-carousel .carousel-item img:hover {
+    transform: scale(1.1); /* Scale up image on hover */
+  }
+  

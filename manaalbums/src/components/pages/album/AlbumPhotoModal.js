@@ -1,0 +1,52 @@
+// src/components/PhotoModal.js
+import React from "react";
+import { Modal, Button } from "react-bootstrap";
+
+export default function AlbumPhotoModal({
+  show,
+  onHide,
+  photo,
+  onPrevious,
+  onNext,
+  selectImage,
+}) {
+  return (
+    <Modal show={show} onHide={onHide} size='lg' centered>
+      <Modal.Body>
+        <div className='d-flex justify-content-center align-items-center'>
+          <Button variant='light' onClick={onPrevious}>
+            &lt;
+          </Button>
+          <img
+            src={selectImage}
+            alt={photo?.title}
+            style={{
+              width: "100%",
+              maxHeight: "80vh",
+              objectFit: "contain",
+            }}
+          />
+          <Button variant='light' onClick={onNext}>
+            &gt;
+          </Button>
+        </div>
+      </Modal.Body>
+      <Modal.Footer
+        style={{ display: "flex", justifyContent: "space-between" }}>
+        <div>
+          <Button variant='light' className='mr-2'>
+            <i className='bi bi-pencil'></i> Edit
+          </Button>
+          <Button variant='light'>
+            <i className='bi bi-trash'></i> Delete
+          </Button>
+        </div>
+        <div>
+          <Button variant='secondary' onClick={onHide}>
+            Close
+          </Button>
+        </div>
+      </Modal.Footer>
+    </Modal>
+  );
+}

@@ -63,13 +63,13 @@ export default function Create() {
           images: {
             imageId: newPhotoId,
             url: files?.map((file) => file.name), // Use file names
-            thumbnails: files[0].name, // Optionally store the first preview as thumbnail
+            thumbnail: files[0].name, // Optionally store the first preview as thumbnail
           },
-          activity: {
-            likes: 0,
-            comments: 0,
-            shares: 0,
-          },
+          // activity: {
+          //   likes: 0,
+          //   comments: 0,
+          //   shares: 0,
+          // },
           albumId: newAlbumId,
         });
       }

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../../context/Context";
 import axios from "axios";
-import { Col, Container, Row, Card, Button, Alert } from "react-bootstrap";
+import { Col, Container, Row, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export default function Album() {
@@ -52,14 +52,6 @@ export default function Album() {
                       <Card.Text>
                         {/* Add more album details here if needed */}
                       </Card.Text>
-                      <div className='d-flex justify-content-end'>
-                        <Button variant='outline' className='mr-2'>
-                          <i className='bi bi-pencil'></i> {/* Edit Icon */}
-                        </Button>
-                        <Button variant='outline'>
-                          <i className='bi bi-trash'></i> {/* Delete Icon */}
-                        </Button>
-                      </div>
                     </Card.Body>
                   </Card>
                 </Col>
