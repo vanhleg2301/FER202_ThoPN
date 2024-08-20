@@ -4,6 +4,7 @@
       "id": 1,
       "userId": 1,
       "name": "John Doe",
+      "avatar": "logo192.png",
       "account": {
         "isActive": false
       },
@@ -17,6 +18,7 @@
       "id": 2,
       "userId": 2,
       "name": "Mary Jane",
+      "avatar": "logo192.png",
       "account": {
         "email": "u2@gmail.com",
         "password": "123",
@@ -33,6 +35,7 @@
       "id": 3,
       "userId": 3,
       "name": "ad",
+      "avatar": "logo192.png",
       "account": {
         "email": "ad@gmail.com"
       },
@@ -46,6 +49,7 @@
       "id": 4,
       "userId": 4,
       "name": "ad1",
+      "avatar": "logo192.png",
       "account": {
         "email": "ad1@gmail.com",
         "password": "U2FsdGVkX19+OdcNzX7QTbWmP7L+cG9NV1CUfS1V698=",
@@ -61,6 +65,7 @@
       "id": 5,
       "userId": 5,
       "name": "vanh",
+      "avatar": "logo192.png",
       "account": {
         "email": "vanhleg697@gmail.com",
         "password": "U2FsdGVkX19C1OSW1mup5y0+30f51Iq8eO5ToEIgHi0=",
@@ -73,13 +78,14 @@
       }
     },
     {
-      "id": 6,
-      "userId": 6,
-      "name": "vanh2",
+      "id": 7,
+      "userId": 7,
+      "name": "vanh3",
+      "avatar": "logo192.png",
       "account": {
-        "email": "vanhleg2301@gmail.com",
-        "password": "U2FsdGVkX1/FSvvLcOxhsWWBTOQS1rb5/lkMyZlb4Ws=",
-        "activeCode": "U2FsdGVkX1/4STOW5DkZap4ZiZVMNrDxhxnmZ8mrdGg=",
+        "email": "vanhleg2210@gmail.com",
+        "password": "U2FsdGVkX19DS4dKpo0/kVBiYUGW7S5qsPu1tqvhOyg=",
+        "activeCode": "U2FsdGVkX183K28RUC9pg235grB/UhMWRAMVZyQIgdM=",
         "isActive": false
       },
       "address": {
@@ -89,14 +95,14 @@
       }
     },
     {
-      "id": 7,
-      "userId": 7,
-      "name": "vanh3",
+      "id": 8,
+      "userId": 8,
+      "name": "va",
+      "avatar": "logo192.png",
       "account": {
-        "email": "vanhleg2210@gmail.com",
-        "password": "U2FsdGVkX19DS4dKpo0/kVBiYUGW7S5qsPu1tqvhOyg=",
-        "activeCode": "U2FsdGVkX183K28RUC9pg235grB/UhMWRAMVZyQIgdM=",
-        "isActive": false
+        "email": "anhhcvhe161142@fpt.edu.vn",
+        "password": "U2FsdGVkX18ie0dTpss/eczD/RwXaFxQllGZ4QD4NeA=",
+        "isActive": true
       },
       "address": {
         "street": "",
@@ -135,6 +141,12 @@
       "albumsId": 5,
       "description": "Hi",
       "userId": 5
+    },
+    {
+      "id": 6,
+      "albumsId": 6,
+      "description": "From Vanh 2",
+      "userId": 6
     }
   ],
   "photos": [
@@ -300,8 +312,11 @@
           "p1_1.jpg",
           "p1_2.jpg",
           "p1_3.jpg",
-          "p1_3.jpg",
-          "p1_3.jpg"
+          "p2_3.jpg",
+          "p5_3.jpg",
+          "p5_2.jpg",
+          "p5_1.jpg",
+          "p5_3.jpg"
         ],
         "thumbnail": "p1.jpg"
       },
@@ -315,6 +330,30 @@
     {
       "description": "ad",
       "id": 9
+    },
+    {
+      "id": 10,
+      "photoId": null,
+      "title": "From Vanh 2",
+      "images": {
+        "imageId": null,
+        "url": [
+          "p1.jpg",
+          "p1_1.jpg",
+          "p2_1.jpg",
+          "p2_2.jpg",
+          "p2_3.jpg",
+          "p2_4.jpg",
+          "p3.jpg",
+          "p3_2.jpg",
+          "p4.jpg",
+          "p4_1.jpg",
+          "p4_2.jpg",
+          "p5.jpg"
+        ],
+        "thumbnail": "p1.jpg"
+      },
+      "albumId": 6
     }
   ],
   "comments": [
@@ -373,6 +412,13 @@
       "text": "hi\n",
       "rate": 1,
       "id": 8
+    },
+    {
+      "photoId": "5",
+      "userId": 1,
+      "text": "",
+      "rate": 1,
+      "id": 9
     }
   ],
   "likes": [

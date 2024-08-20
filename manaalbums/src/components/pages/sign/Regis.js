@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row, Card, Button, Form } from "react-bootstrap";
+import { Col, Row, Card, Button, Form, Spinner } from "react-bootstrap";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -63,6 +63,7 @@ export default function Regis() {
         id: nextUserId,
         userId: nextUserId,
         name,
+        avatar: "logo192.png",
         account: {
           email,
           password: encryptedPassword,
@@ -79,15 +80,18 @@ export default function Regis() {
       // Send activation email
       sendActivationEmail(email, activeCode);
 
-      toast.success("Registration successful! Check your email for the activation code.", {
-        autoClose: 2000,
-        position: "bottom-right",
-      });
+      toast.success(
+        "Registration successful! Check your email for the activation code.",
+        {
+          autoClose: 1000,
+          position: "bottom-right",
+        }
+      );
 
       // Redirect to another page or clear form fields
       setTimeout(() => {
         navigate("/auth/login");
-      }, 2000);
+      }, 5000);
     } catch (error) {
       console.error("Error registering user:", error);
       toast.error("An error occurred during registration.", {
@@ -98,6 +102,7 @@ export default function Regis() {
       setLoading(false);
     }
   };
+
 
   return (
     <>
@@ -135,7 +140,9 @@ export default function Regis() {
                       required
                     />
                     {emailError && (
-                      <Form.Text className='text-danger'>{emailError}</Form.Text>
+                      <Form.Text className='text-danger'>
+                        {emailError}
+                      </Form.Text>
                     )}
                   </Form.Group>
 
@@ -150,7 +157,9 @@ export default function Regis() {
                       required
                     />
                     {passwordError && (
-                      <Form.Text className='text-danger'>{passwordError}</Form.Text>
+                      <Form.Text className='text-danger'>
+                        {passwordError}
+                      </Form.Text>
                     )}
                   </Form.Group>
 
@@ -158,8 +167,7 @@ export default function Regis() {
                     variant='primary'
                     type='submit'
                     className='w-100'
-                    disabled={loading}
-                  >
+                    disabled={loading}>
                     {loading ? "Registering..." : "Register"}
                   </Button>
                 </Form>

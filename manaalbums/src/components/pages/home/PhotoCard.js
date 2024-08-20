@@ -1,13 +1,21 @@
 import React, { useContext } from "react";
-import { Card, Button, Row, Col, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Row,
+  Col,
+  OverlayTrigger,
+  Tooltip,
+  Image,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AuthContext from "../../../context/Context";
 
 export default function PhotoCard({
   photo,
   likesData,
-  setLikesData,
-  likedPhotos,
+  // setLikesData,
+  // likedPhotos,
   handleLike,
   handleComment,
   users,
@@ -27,7 +35,14 @@ export default function PhotoCard({
   const getUserNamesWhoLiked = (photoId) => {
     const photoLikes = likesData?.find((like) => like?.photoId === photoId);
     const userIds = photoLikes?.userIds || [];
-    return userIds.map((id) => users?.find((user) => user?.userId === id)?.name).join(", ");
+    return userIds
+      .map((id) => users?.find((user) => user?.userId === id)?.name)
+      .join(", ");
+  };
+
+  const getAvatarByAlbumId = (albumId) => {
+    const user = users?.find((user) => user?.id === albumId);
+    return user?.avatar;
   };
 
   return (
@@ -36,11 +51,11 @@ export default function PhotoCard({
         <Card.Header>
           <Row>
             <Col xs={1}>
-              <img
+              <Image
                 width={50}
                 height={50}
-                src='logo192.png'
-                alt='User Profile'
+                src={"/assets/images/" + getAvatarByAlbumId(photo?.albumId)}
+                alt={getUserNameByAlbumId(photo?.albumId)}
                 className='rounded-circle'
               />
             </Col>
@@ -77,7 +92,8 @@ export default function PhotoCard({
                   </Tooltip>
                 }>
                 <span>
-                  {likesData?.find((like) => like?.photoId === photo?.id)?.userIds.length || 0}{" "}
+                  {likesData?.find((like) => like?.photoId === photo?.id)
+                    ?.userIds.length || 0}{" "}
                   <i
                     className={
                       hasLiked(photo?.id) ? "bi bi-heart-fill" : "bi bi-heart"

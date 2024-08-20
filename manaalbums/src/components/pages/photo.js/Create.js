@@ -100,7 +100,7 @@ export default function Create() {
           <div className='d-flex align-items-start mb-3'>
             <div className='mr-2'>
               <img
-                src='https://via.placeholder.com/50' // Replace with actual user profile image URL
+                src={"/assets/images/" + user?.avatar} // Replace with actual user profile image URL
                 alt='Profile'
                 className='rounded-circle'
                 width='40'

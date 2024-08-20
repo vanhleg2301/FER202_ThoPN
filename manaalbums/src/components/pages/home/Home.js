@@ -10,7 +10,7 @@ import CommentModal from "./CommentModal";
 import ShareFor from "./ShareFor";
 import AuthContext from "../../../context/Context";
 
-const ITEMS_PER_PAGE = 3;
+const ITEMS_PER_PAGE = 5;
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
@@ -87,19 +87,23 @@ export default function Home() {
     try {
       const userId = user?.userId;
       if (!userId) {
-        console.warn("User is not logged in");
+        alert("User is not logged in");
         return;
       }
-  
+
       let updatedLikesData = [...likesData]; // Create a copy of likesData
-      const likeEntry = updatedLikesData.find((like) => like?.photoId === Number(photoId));
-  
+      const likeEntry = updatedLikesData.find(
+        (like) => like?.photoId === Number(photoId)
+      );
+
       if (likeEntry) {
         if (likeEntry?.userIds?.includes(userId)) {
           // User already liked, so unlike by removing the userId
-          const updatedUserIds = likeEntry.userIds.filter((id) => id !== userId);
+          const updatedUserIds = likeEntry.userIds.filter(
+            (id) => id !== userId
+          );
           likeEntry.userIds = updatedUserIds;
-  
+
           await axios.patch(`http://localhost:9999/likes/${likeEntry.id}`, {
             userIds: updatedUserIds,
           });
@@ -107,7 +111,7 @@ export default function Home() {
           // User hasn't liked yet, so like by adding the userId
           const updatedUserIds = [...likeEntry.userIds, userId];
           likeEntry.userIds = updatedUserIds;
-  
+
           await axios.patch(`http://localhost:9999/likes/${likeEntry.id}`, {
             userIds: updatedUserIds,
           });
@@ -118,11 +122,14 @@ export default function Home() {
           photoId: Number(photoId),
           userIds: [userId],
         };
-  
-        const response = await axios.post("http://localhost:9999/likes", newLikeEntry);
+
+        const response = await axios.post(
+          "http://localhost:9999/likes",
+          newLikeEntry
+        );
         updatedLikesData.push(response.data); // Add the new like entry to the likesData
       }
-  
+
       // Update the state
       setLikedPhotos((prevLikes) => ({
         ...prevLikes,
@@ -133,11 +140,10 @@ export default function Home() {
       console.error("Error handling like:", error);
     }
   };
-  
-  
 
   // Xử lý Comments
   const handleComment = (photoId) => {
+
     const selectedPhoto = photos?.find((photo) => photo?.id === photoId);
     const relatedComments = commentsData?.filter(
       (comment) => comment?.photoId === photoId

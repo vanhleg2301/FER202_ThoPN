@@ -5,7 +5,7 @@ export const sendActivationEmail = (email, activeCode) => {
     from_name: "System",
     to_name: email,
     activeCode: `http://localhost:3000/auth/active-code/${activeCode}`,
-    reply_to: email,
+    to_email: email
   };
 
   emailjs

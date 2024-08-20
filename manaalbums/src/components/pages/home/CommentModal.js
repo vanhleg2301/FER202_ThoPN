@@ -75,6 +75,7 @@ export default function CommentModal({
                 placeholder='Add a comment...'
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
+                required
               />
             </Form.Group>
             <Form.Group controlId='commentRating'>

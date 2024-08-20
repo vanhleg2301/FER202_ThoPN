@@ -16,8 +16,7 @@ export default function PhotoDetail() {
   const [comments, setComments] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [scrollOffset, setScrollOffset] = useState(0);
+  const [startIndex, setStartIndex] = useState(0);
 
   useEffect(() => {
     const fetchPhoto = async () => {
@@ -28,7 +27,7 @@ export default function PhotoDetail() {
         const photoData = response?.data;
         setPhoto(photoData);
         setSelectedImage(photoData?.images?.url[0]);
-        setCurrentIndex(0);
+        setStartIndex(0);
 
         if (photoData?.albumId) {
           const albumResponse = await axios.get(
@@ -79,28 +78,15 @@ export default function PhotoDetail() {
 
   const handleImageClick = (url, index) => {
     setSelectedImage(url);
-    setCurrentIndex(index);
-  };
-
-  const handleNextImage = () => {
-    const newIndex = (currentIndex + 1) % uniqueImages.length;
-    setSelectedImage(uniqueImages[newIndex]);
-    setCurrentIndex(newIndex);
-  };
-
-  const handlePreviousImage = () => {
-    const newIndex = (currentIndex - 1 + uniqueImages.length) % uniqueImages.length;
-    setSelectedImage(uniqueImages[newIndex]);
-    setCurrentIndex(newIndex);
   };
 
   const handleScrollLeft = () => {
-    setScrollOffset(prevOffset => Math.max(prevOffset - 100, 0));
+    setStartIndex((prevIndex) => Math.max(prevIndex - 1, 0));
   };
 
   const handleScrollRight = () => {
-    const maxOffset = Math.max(0, (uniqueImages.length - visibleCount) * 100);
-    setScrollOffset(prevOffset => Math.min(prevOffset + 100, maxOffset));
+    const maxIndex = Math.max(0, uniqueImages.length - visibleCount);
+    setStartIndex((prevIndex) => Math.min(prevIndex + 1, maxIndex));
   };
 
   return (
@@ -120,7 +106,7 @@ export default function PhotoDetail() {
                           : "/assets/images/" + selectedImage
                         : "/assets/images/default-thumbnail.jpg"
                     }
-                    style={{ width: "100%", height: 500 }}
+                    style={{ width: "100%", height: 555}}
                     alt={photo?.title}
                   />
                   <Card.Body>
@@ -134,46 +120,53 @@ export default function PhotoDetail() {
                   <Button
                     variant='outline'
                     onClick={handleScrollLeft}
-                    style={{ fontSize: "1.5rem", marginRight: "1rem" }}
-                  >
+                    style={{
+                      fontSize: "1.5rem",
+                      marginRight: "1rem",
+                      height: 100,
+                    }}>
                     <i className='bi bi-arrow-left-circle-fill'></i>
                   </Button>
                   <div
-                    className='d-flex overflow-hidden'
-                    style={{ width: "100%", whiteSpace: "nowrap" }}
-                  >
-                    <div
-                      className='d-flex'
-                      style={{ transform: `translateX(-${scrollOffset}px)`, transition: 'transform 0.3s' }}
-                    >
-                      {uniqueImages.map((imageUrl, index) => (
-                        <div key={index} className='p-1'>
-                          <Image
-                            src={
-                              imageUrl
-                                ? imageUrl.startsWith("http")
-                                  ? imageUrl
-                                  : "/assets/images/" + imageUrl
-                                : "/assets/images/default-thumbnail.jpg"
-                            }
-                            onClick={() => handleImageClick(imageUrl, index)}
-                            alt={`Images ${index}`}
-                            style={{
-                              width: 100,
-                              height: "auto",
-                              cursor: "pointer",
-                            }}
-                            className='img-thumbnail'
-                          />
-                        </div>
-                      ))}
+                    className='d-flex overflow-hidden justify-content-center'
+                    style={{
+                      width: "calc(100% - 120px)",
+                      whiteSpace: "nowrap",
+                    }}>
+                    <div className='d-flex'>
+                      {uniqueImages
+                        .slice(startIndex, startIndex + visibleCount)
+                        .map((imageUrl, index) => (
+                          <div key={index} className='d-flex p-1'>
+                            <Image
+                              src={
+                                imageUrl
+                                  ? imageUrl.startsWith("http")
+                                    ? imageUrl
+                                    : "/assets/images/" + imageUrl
+                                  : "/assets/images/default-thumbnail.jpg"
+                              }
+                              onClick={() => handleImageClick(imageUrl, index)}
+                              alt={`Images ${index}`}
+                              style={{
+                                width: 200,
+                                height: 80,
+                                cursor: "pointer",
+                              }}
+                              className='img-thumbnail'
+                            />
+                          </div>
+                        ))}
                     </div>
                   </div>
                   <Button
                     variant='outline'
                     onClick={handleScrollRight}
-                    style={{ fontSize: "1.5rem", marginLeft: "1rem" }}
-                  >
+                    style={{
+                      fontSize: "1.5rem",
+                      marginLeft: "1rem",
+                      height: 100,
+                    }}>
                     <i className='bi bi-arrow-right-circle-fill'></i>
                   </Button>
                 </div>

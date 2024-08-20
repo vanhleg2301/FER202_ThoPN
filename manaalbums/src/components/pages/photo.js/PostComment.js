@@ -40,6 +40,7 @@ export default function PostComment({ photoId, setComments }) {
             rows={3}
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
+            required
           />
         </Form.Group>
 

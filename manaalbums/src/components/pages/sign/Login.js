@@ -36,6 +36,7 @@ export default function Login() {
               id: user?.id,
               userId: user?.userId,
               name: user?.name,
+              avatar: user?.avatar,
               account: {
                 email: user?.account?.email,
                 // password: user?.account?.password, 

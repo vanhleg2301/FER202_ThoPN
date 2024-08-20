@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Card, Col, Row, Button, Form } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import { Card, Col, Row, Button, Form, Image } from "react-bootstrap";
 import axios from "axios";
 
 export default function Profile() {
   // Retrieve user data from local storage
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [isEditing, setIsEditing] = useState(false);
+  const [avatar, setAvatar] = useState(null);
   const [formData, setFormData] = useState({ ...user });
 
   useEffect(() => {
@@ -38,23 +39,40 @@ export default function Profile() {
     }
   };
 
+  const fileInputRef = useRef(null);
+
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleChangeImage = (event) => {
+    const file = event.target.files[0];
+    // Handle file selection here
+    console.log(file);
+    setAvatar(file.name);
+  };
+
   const handleSave = async () => {
     try {
       // Ensure zipCode is a number
       const updatedData = {
         ...formData,
+        avatar: avatar,
         address: {
           ...formData?.address,
           zipCode: Number(formData?.address?.zipCode),
         },
       };
-  
+
       // Send updated user data to the backend
-      await axios.put(`http://localhost:9999/users/${user?.userId}`, updatedData);
-      
+      await axios.put(
+        `http://localhost:9999/users/${user?.userId}`,
+        updatedData
+      );
+
       // Store the user details in local storage
       localStorage.setItem("user", JSON.stringify(updatedData));
-  
+
       // Update user state
       setUser(updatedData);
       setIsEditing(false);
@@ -64,7 +82,6 @@ export default function Profile() {
       alert("An error occurred while updating the profile.");
     }
   };
-  
 
   if (!user) {
     return (
@@ -83,6 +100,37 @@ export default function Profile() {
               <h2 className='text-center mb-4'>User Profile</h2>
               {isEditing ? (
                 <Form>
+                  <Form.Group className='mb-3'>
+                    <Form.Label>
+                      <Image
+                        width={100}
+                        height={100}
+                        roundedCircle
+                        src={
+                          avatar
+                            ? "/assets/images/" + avatar
+                            : "/assets/images/" +
+                              (user?.avatar || "logo192.png")
+                        }
+                      />
+                    </Form.Label>
+                    <div>
+                      <Button
+                        variant='primary'
+                        className='d-block mb-2'
+                        onClick={handleClick}>
+                        Upload Avatar
+                      </Button>
+                      <Form.Control
+                        type='file'
+                        name='avatar'
+                        accept='image/*'
+                        ref={fileInputRef}
+                        onChange={handleChangeImage}
+                        style={{ display: "none" }} // Hide the actual file input
+                      />
+                    </div>
+                  </Form.Group>
                   <Form.Group className='mb-3'>
                     <Form.Label>Name</Form.Label>
                     <Form.Control
@@ -150,26 +198,32 @@ export default function Profile() {
               ) : (
                 <>
                   <Row className='mb-3'>
-                    <Col xs={12} sm={4}>
-                      <strong>Name:</strong>
+                    <Col xs={12} sm={12}>
+                      <div
+                        style={{ alignItems: "center", textAlign: "center" }}>
+                        <Image
+                          width={100}
+                          height={100}
+                          src={"/assets/images/" + user?.avatar}
+                          roundedCircle
+                        />
+                      </div>
                     </Col>
-                    <Col xs={12} sm={8}>
-                      <Card.Text>{user?.name}</Card.Text>
+                    <Col xs={12} sm={12}>
+                      <Card.Text>
+                        <strong>Name:</strong> {user?.name}
+                      </Card.Text>
                     </Col>
                   </Row>
                   <Row className='mb-3'>
-                    <Col xs={12} sm={4}>
-                      <strong>Email:</strong>
-                    </Col>
-                    <Col xs={12} sm={8}>
-                      <Card.Text>{user?.account?.email}</Card.Text>
+                    <Col xs={12} sm={12}>
+                      <Card.Text>
+                        <strong>Email:</strong> {user?.account?.email}
+                      </Card.Text>
                     </Col>
                   </Row>
                   <Row className='mb-3'>
-                    <Col xs={12} sm={4}>
-                      <strong>Address:</strong>
-                    </Col>
-                    <Col xs={12} sm={8}>
+                    <Col xs={12} sm={12}>
                       <Card.Text>
                         <strong>Street:</strong> {user?.address?.street}
                       </Card.Text>

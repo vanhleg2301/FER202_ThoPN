@@ -6,9 +6,10 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import "./Header.css"; // Import file CSS
 import AuthContext from "../../context/Context";
+import { Image } from "react-bootstrap";
 
 export default function Header() {
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
 
   return (
     <Navbar
@@ -30,7 +31,7 @@ export default function Header() {
             </div>
           )*/}
           {isLoggedIn && (
-            <Nav.Link className="m-2" as={Link} to='/album'>
+            <Nav.Link className='m-2' as={Link} to='/album'>
               Your Album
             </Nav.Link>
           )}
@@ -52,10 +53,11 @@ export default function Header() {
             {isLoggedIn ? (
               <div className='avatar-menu-wrapper'>
                 <Link className='avatar-link'>
-                  <img
-                    height={30}
-                    width={30}
-                    src='logo192.png'
+                  <Image
+                    height={40}
+                    width={40}
+                    roundedCircle
+                    src={"/assets/images/" + user?.avatar}
                     alt='User Avatar'
                     className='avatar-img'
                   />
