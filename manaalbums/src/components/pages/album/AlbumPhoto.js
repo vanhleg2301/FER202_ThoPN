@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Row, Col, Card, Button, Alert, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Alert,
+  Form,
+} from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import AuthContext from "../../../context/Context";
@@ -9,26 +17,20 @@ export default function AlbumPhoto() {
   const { albumId } = useParams();
   const { user } = useContext(AuthContext);
   const [photos, setPhotos] = useState([]);
-  const [album, setAlbum] = useState({});
   const [modalShow, setModalShow] = useState(false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // To track the image within the selected photo
   const [selectImage, setSelectImage] = useState(null);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [editDescription, setEditDescription] = useState("");
+  const [editTitle, setEditTitle] = useState("");
 
   useEffect(() => {
-    if (!user) {
-      setError("Not Found");
-      return;
-    }
+    if (!user) return; // Do nothing if user is not loaded yet
 
     axios
       .get(`http://localhost:9999/albums/${albumId}`)
-      .then((response) => {
-        setAlbum(response?.data);
-        setEditDescription(response?.data?.description || "");
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error("Error fetching album details:", error);
         setError("Album not found");
@@ -39,8 +41,9 @@ export default function AlbumPhoto() {
       .then((response) => {
         setPhotos(response?.data);
         if (response?.data.length > 0) {
-          setSelectImage(response?.data?.images?.url[0]);
+          setSelectImage(response?.data[0]?.images?.url[0]); // Fixing the reference
           setCurrentPhotoIndex(0); // Set initial index if photos are available
+          setCurrentImageIndex(0); // Initialize the current image index
         }
       })
       .catch((error) => {
@@ -51,6 +54,8 @@ export default function AlbumPhoto() {
 
   const handleImageClick = (index) => {
     setCurrentPhotoIndex(index);
+    setSelectImage(photos[index]?.images?.url[0]);
+    setCurrentImageIndex(0); // Reset to the first image of the selected photo
     setModalShow(true);
   };
 
@@ -58,46 +63,49 @@ export default function AlbumPhoto() {
 
   const handlePrevious = () => {
     const newIndex =
-      ((currentPhotoIndex + 1) % photos?.images?.url?.length) %
-      photos?.images?.url?.length;
-    setSelectImage(photos?.images?.url[newIndex]);
-    setCurrentPhotoIndex(newIndex);
+      (currentImageIndex - 1 + photos[currentPhotoIndex]?.images?.url?.length) %
+      photos[currentPhotoIndex]?.images?.url?.length;
+    setCurrentImageIndex(newIndex);
+    setSelectImage(photos[currentPhotoIndex]?.images?.url[newIndex]);
   };
 
   const handleNext = () => {
-    const newIndex = (currentPhotoIndex + 1) % photos?.images?.url?.length;
-    setSelectImage(photos?.images?.url[newIndex]);
-    setCurrentPhotoIndex(newIndex);
+    const newIndex =
+      (currentImageIndex + 1) % photos[currentPhotoIndex]?.images?.url?.length;
+    setCurrentImageIndex(newIndex);
+    setSelectImage(photos[currentPhotoIndex]?.images?.url[newIndex]);
   };
 
-  const handleEditClick = () => {
+  const handleEditClick = (photo) => {
     setIsEditing(true);
+    setEditTitle(photo.title);
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setEditDescription(album?.description || "");
+    setEditTitle("");
   };
 
-  const handleDescriptionChange = (e) => {
-    setEditDescription(e.target.value);
+  const handleTitleChange = (e) => {
+    setEditTitle(e.target.value);
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveTitle = (id) => {
     axios
-      .put(`http://localhost:9999/albums/${albumId}`, {
-        description: editDescription,
+      .patch(`http://localhost:9999/photos/${id}`, {
+        title: editTitle,
       })
-      .then(() => {
-        setAlbum((prevAlbum) => ({
-          ...prevAlbum,
-          description: editDescription,
-        }));
+      .then((response) => {
+        setPhotos((prevPhotos) =>
+          prevPhotos.map((photo) =>
+            photo.id === id ? { ...photo, title: editTitle } : photo
+          )
+        );
         setIsEditing(false);
       })
       .catch((error) => {
-        console.error("Error updating album description:", error);
-        setError("Failed to update description");
+        console.error("Error updating photo title:", error);
+        setError("Failed to update title");
       });
   };
 
@@ -135,55 +143,59 @@ export default function AlbumPhoto() {
                     style={{ cursor: "pointer" }}
                   />
                   <Card.Body>
-                    <Card.Title>{photo?.title}</Card.Title>
-                    <div className='d-flex justify-content-between align-items-center mt-2 mb-2'>
-                      <Card.Text className='mb-0'>
-                        {photo?.activity?.like}{" "}
-                        <i className='bi bi-heart-fill'></i>
-                      </Card.Text>
-                      <Card.Text className='mb-0'>
-                        {photo?.activity?.comments}{" "}
-                        <i className='bi bi-chat-dots'></i>
-                      </Card.Text>
-                      <Card.Text className='mb-0'>
-                        {photo?.activity?.share} <i className='bi bi-share'></i>
-                      </Card.Text>
-                    </div>
-                    <div className='text-center'>
-                      <Button variant='light' className='mr-2' onClick={handleEditClick}>
-                        <i className='bi bi-pencil'></i> Edit
-                      </Button>
-                      <Button variant='light'>
-                        <i className='bi bi-trash'></i> Delete
-                      </Button>
-                    </div>
+                    {isEditing && photo.id === photos[currentPhotoIndex]?.id ? (
+                      <Form.Group controlId='formTitle'>
+                        <Form.Label>Title</Form.Label>
+                        <Form.Control
+                          type='text'
+                          value={editTitle}
+                          onChange={handleTitleChange}
+                        />
+                        <Button
+                          variant='primary'
+                          onClick={() => handleSaveTitle(photo.id)}
+                          className='mr-2 mt-2'>
+                          Save
+                        </Button>
+                        <Button
+                          variant='secondary'
+                          onClick={handleCancelEdit}
+                          className='mt-2'>
+                          Cancel
+                        </Button>
+                      </Form.Group>
+                    ) : (
+                      <>
+                        <Card.Title>{photo?.title}</Card.Title>
+                        <div className='d-flex justify-content-between align-items-center mt-2 mb-2'>
+                          <Card.Text className='mb-0'>
+                            {photo?.activity?.like}{" "}
+                            <i className='bi bi-heart-fill'></i>
+                          </Card.Text>
+                          <Card.Text className='mb-0'>
+                            {photo?.activity?.comments}{" "}
+                            <i className='bi bi-chat-dots'></i>
+                          </Card.Text>
+                          <Card.Text className='mb-0'>
+                            {photo?.activity?.share}{" "}
+                            <i className='bi bi-share'></i>
+                          </Card.Text>
+                        </div>
+                        <div className='text-center'>
+                          <Button
+                            variant='light'
+                            className='mr-2'
+                            onClick={() => handleEditClick(photo)}>
+                            <i className='bi bi-pencil'></i> Edit
+                          </Button>
+                        </div>
+                      </>
+                    )}
                   </Card.Body>
                 </Card>
               </Col>
             ))}
           </Row>
-          {isEditing && (
-            <Row className='justify-content-center mt-4'>
-              <Col md={8}>
-                <Form>
-                  <Form.Group controlId='formDescription'>
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control
-                      type='text'
-                      value={editDescription}
-                      onChange={handleDescriptionChange}
-                    />
-                  </Form.Group>
-                  <Button variant='primary' onClick={handleSaveChanges} className='mr-2'>
-                    Save
-                  </Button>
-                  <Button variant='secondary' onClick={handleCancelEdit}>
-                    Cancel
-                  </Button>
-                </Form>
-              </Col>
-            </Row>
-          )}
         </Col>
       </Row>
 

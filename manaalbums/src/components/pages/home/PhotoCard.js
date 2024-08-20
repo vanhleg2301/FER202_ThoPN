@@ -77,7 +77,7 @@ export default function PhotoCard({
               src={
                 photo?.images?.thumbnail.startsWith("http")
                   ? photo?.images?.thumbnail
-                  : "/assets/images/" + photo?.images?.thumbnail
+                  : "/assets/images/" + (photo?.images?.thumbnail || "logo192.png")
               }
               className='my-3'
             />

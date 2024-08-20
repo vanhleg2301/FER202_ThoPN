@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row, Card, Button, Form } from "react-bootstrap";
+import { Col, Row, Card, Button, Form, Alert } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { decrypt } from "../../../constants/key";
@@ -9,6 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [active, setActive] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -26,6 +27,17 @@ export default function Login() {
       // Find the user with the matching email
       const user = users?.find(({ account }) => account?.email === email);
 
+      if (user?.account?.isActive === false) {
+        setActive(
+          <>
+            <Alert variant='danger'>
+              <h6>Your account is not active yet. Check code active in your email</h6>
+            </Alert>
+          </>
+        );
+        return;
+      }
+
       if (user) {
         // Check if the password matches
         if (decrypt(user?.account?.password) === password) {
@@ -39,7 +51,7 @@ export default function Login() {
               avatar: user?.avatar,
               account: {
                 email: user?.account?.email,
-                // password: user?.account?.password, 
+                // password: user?.account?.password,
                 // activeCode: user?.account?.activeCode,
                 // isActive: user?.account?.isActive,
               },
@@ -60,8 +72,12 @@ export default function Login() {
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
-      setEmailError("An error occurred while trying to login. Please try again.");
-      setPasswordError("An error occurred while trying to login. Please try again.");
+      setEmailError(
+        "An error occurred while trying to login. Please try again."
+      );
+      setPasswordError(
+        "An error occurred while trying to login. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -74,6 +90,9 @@ export default function Login() {
           <Card className='p-4 shadow-lg'>
             <Card.Body>
               <h2 className='text-center mb-4'>Login</h2>
+              {active && (
+                <Form.Text className='text-danger'>{active}</Form.Text>
+              )}
               <Form onSubmit={handleLogin}>
                 <Form.Group className='mb-3'>
                   <Form.Label>Email</Form.Label>
@@ -101,7 +120,9 @@ export default function Login() {
                     required
                   />
                   {passwordError && (
-                    <Form.Text className='text-danger'>{passwordError}</Form.Text>
+                    <Form.Text className='text-danger'>
+                      {passwordError}
+                    </Form.Text>
                   )}
                 </Form.Group>
 
@@ -109,8 +130,7 @@ export default function Login() {
                   variant='primary'
                   type='submit'
                   className='w-100'
-                  disabled={loading}
-                >
+                  disabled={loading}>
                   {loading ? "Logging in..." : "Login"}
                 </Button>
               </Form>

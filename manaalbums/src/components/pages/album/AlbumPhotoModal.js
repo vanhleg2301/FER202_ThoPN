@@ -1,4 +1,3 @@
-// src/components/PhotoModal.js
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
@@ -18,7 +17,7 @@ export default function AlbumPhotoModal({
             &lt;
           </Button>
           <img
-            src={selectImage}
+            src={selectImage?.startsWith("http") ? selectImage : `/assets/images/${selectImage}`}
             alt={photo?.title}
             style={{
               width: "100%",

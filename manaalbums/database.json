@@ -115,8 +115,8 @@
     {
       "id": 1,
       "albumsId": 1,
-      "description": "Summer albums",
-      "userId": 1
+      "description": "Summer albums edited",
+      "userId": 5
     },
     {
       "id": 2,
@@ -139,7 +139,7 @@
     {
       "id": 5,
       "albumsId": 5,
-      "description": "Hi",
+      "description": "Hi edited",
       "userId": 5
     },
     {
@@ -153,7 +153,7 @@
     {
       "id": 1,
       "photoId": 1,
-      "title": "Summer",
+      "title": "Summer edited",
       "images": {
         "imageId": 1,
         "url": [
@@ -176,7 +176,7 @@
     {
       "id": 2,
       "photoId": 2,
-      "title": "Summer",
+      "title": "Summer 2",
       "images": {
         "imageId": 2,
         "url": [
