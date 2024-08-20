@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Card, Button, Row, Col, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AuthContext from "../../../context/Context";
 
@@ -10,6 +10,7 @@ export default function PhotoCard({
   likedPhotos,
   handleLike,
   handleComment,
+  users,
   getUserNameByAlbumId,
   getAlbumDescription,
   commentsData,
@@ -20,6 +21,13 @@ export default function PhotoCard({
   const hasLiked = (photoId) => {
     const photoLikes = likesData?.find((like) => like?.photoId === photoId);
     return photoLikes?.userIds?.includes(user?.userId);
+  };
+
+  // Function to get the names of users who liked the photo
+  const getUserNamesWhoLiked = (photoId) => {
+    const photoLikes = likesData?.find((like) => like?.photoId === photoId);
+    const userIds = photoLikes?.userIds || [];
+    return userIds.map((id) => users?.find((user) => user?.userId === id)?.name).join(", ");
   };
 
   return (
@@ -60,16 +68,32 @@ export default function PhotoCard({
             />
           </Link>
           <Card.Text className='text-muted'>
-            {likesData.find((like) => like.photoId === photo?.id)?.userIds
-              .length || 0}{" "}
-            <i
-              className={
-                hasLiked(photo?.id) ? "bi bi-heart-fill" : "bi bi-heart"
-              }></i>{" "}
-            {commentsData?.filter((comment) => comment?.photoId === photo?.id)
-              .length || 0}{" "}
-            <i className='bi bi-chat-dots'></i> · 0{" "}
-            <i className='bi bi-share'></i>
+            <>
+              <OverlayTrigger
+                placement='top'
+                overlay={
+                  <Tooltip id={`tooltip-like-${photo?.id}`}>
+                    {getUserNamesWhoLiked(photo?.id) || "No likes yet"}
+                  </Tooltip>
+                }>
+                <span>
+                  {likesData?.find((like) => like?.photoId === photo?.id)?.userIds.length || 0}{" "}
+                  <i
+                    className={
+                      hasLiked(photo?.id) ? "bi bi-heart-fill" : "bi bi-heart"
+                    }></i>{" "}
+                </span>
+              </OverlayTrigger>
+            </>
+            <>
+              {commentsData?.filter((comment) => comment?.photoId === photo?.id)
+                .length || 0}{" "}
+              <i className='bi bi-chat-dots'></i> · 0{" "}
+            </>
+            <>
+              {" "}
+              <i className='bi bi-share'></i>
+            </>
           </Card.Text>
         </Card.Body>
         <Card.Footer>

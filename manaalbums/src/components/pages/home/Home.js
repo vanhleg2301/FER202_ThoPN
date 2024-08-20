@@ -234,6 +234,7 @@ export default function Home() {
                 likedPhotos={likedPhotos}
                 handleLike={handleLike}
                 handleComment={handleComment}
+                users={users}
                 getUserNameByAlbumId={getUserNameByAlbumId}
                 getAlbumDescription={getAlbumDescription}
                 commentsData={commentsData}
