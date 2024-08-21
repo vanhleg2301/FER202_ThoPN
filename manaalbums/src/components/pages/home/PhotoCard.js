@@ -10,14 +10,14 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AuthContext from "../../../context/Context";
+import "./PhotoCard.css";
 
 export default function PhotoCard({
   photo,
   likesData,
-  // setLikesData,
-  // likedPhotos,
   handleLike,
   handleComment,
+  handleShare,
   users,
   getUserNameByAlbumId,
   getAlbumDescription,
@@ -26,13 +26,11 @@ export default function PhotoCard({
 }) {
   const { user } = useContext(AuthContext);
 
-  // Function to check if the user has liked the photo
   const hasLiked = (photoId) => {
     const photoLikes = likesData?.find((like) => like?.photoId === photoId);
     return photoLikes?.userIds?.includes(user?.userId);
   };
 
-  // Function to get the names of users who liked the photo
   const getUserNamesWhoLiked = (photoId) => {
     const photoLikes = likesData?.find((like) => like?.photoId === photoId);
     const userIds = photoLikes?.userIds || [];
@@ -42,123 +40,112 @@ export default function PhotoCard({
   };
 
   const getAvatarByAlbumId = (albumId) => {
-    // Find the album with the given albumId
     const album = albums?.find((album) => album?.albumsId === albumId);
-    console.log("album", album);
-    
     if (album) {
-      // Find the user associated with the album
       const user = users?.find((user) => user?.id === album?.userId);
-      console.log("user", user?.avatar);
-      
-      // Return the user's avatar or the default avatar if the user's avatar is undefined or null
       return user?.avatar || "logo192.png";
     }
-    
-    // Return the default avatar if the album is not found
     return "logo192.png";
   };
-  
 
   return (
-    <Col md={12}>
-      <Card className='mt-4 mb-4'>
+    <div className="mt-4">
+      <div className="photo-card">
         <Card.Header>
           <Row>
-            <Col xs={1}>
+            <Col xs={2}>
               <Image
                 width={50}
                 height={50}
                 src={"/assets/images/" + getAvatarByAlbumId(photo?.albumId)}
                 alt={getUserNameByAlbumId(photo?.albumId)}
-                className='rounded-circle'
+                className="rounded-circle"
               />
             </Col>
-            <Col xs={11}>
+            <Col xs={10}>
               <div>
                 <strong>{getUserNameByAlbumId(photo?.albumId)}</strong>
               </div>
-              <div className='text-muted' style={{ fontSize: "0.9rem" }}>
+              <div className="text-muted">
                 {getAlbumDescription(photo?.albumId)}
               </div>
             </Col>
           </Row>
         </Card.Header>
         <Card.Body>
-          <Card.Title>{photo?.title}</Card.Title>
-          <Link to={`photo/${photo?.id}`}>
-            <Card.Img
-              variant='top'
-              src={
-                photo?.images?.thumbnail.startsWith("http")
-                  ? photo?.images?.thumbnail
-                  : "/assets/images/" +
-                    (photo?.images?.thumbnail || "logo192.png")
+          <div>
+            <Link to={`photo/${photo?.id}`}>
+              <Card.Img
+                variant="top"
+                src={
+                  photo?.images?.thumbnail.startsWith("http")
+                    ? photo?.images?.thumbnail
+                    : "/assets/images/" +
+                      (photo?.images?.thumbnail || "logo192.png")
+                }
+                className="my-3"
+              />
+            </Link>
+          </div>
+          <Card.Text className="text-muted">
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip id={`tooltip-like-${photo?.id}`}>
+                  {getUserNamesWhoLiked(photo?.id) || "No likes yet"}
+                </Tooltip>
               }
-              className='my-3'
-            />
-          </Link>
-          <Card.Text className='text-muted'>
-            <>
-              <OverlayTrigger
-                placement='top'
-                overlay={
-                  <Tooltip id={`tooltip-like-${photo?.id}`}>
-                    {getUserNamesWhoLiked(photo?.id) || "No likes yet"}
-                  </Tooltip>
-                }>
-                <span>
-                  {likesData?.find((like) => like?.photoId === photo?.id)
-                    ?.userIds.length || 0}{" "}
-                  <i
-                    className={
-                      hasLiked(photo?.id) ? "bi bi-heart-fill" : "bi bi-heart"
-                    }></i>{" "}
-                </span>
-              </OverlayTrigger>
-            </>
-            <>
-              {commentsData?.filter((comment) => comment?.photoId === photo?.id)
-                .length || 0}{" "}
-              <i className='bi bi-chat-dots'></i> · 0{" "}
-            </>
-            <>
-              {" "}
-              <i className='bi bi-share'></i>
-            </>
+            >
+              <span>
+                {likesData?.find((like) => like?.photoId === photo?.id)
+                  ?.userIds.length || 0}{" "}
+                <i
+                  className={
+                    hasLiked(photo?.id)
+                      ? "bi bi-heart-fill"
+                      : "bi bi-heart"
+                  }
+                ></i>{" "}
+              </span>
+            </OverlayTrigger>
+            {commentsData?.filter(
+              (comment) => comment?.photoId === photo?.id
+            ).length || 0}{" "}
+            <i className="bi bi-chat-dots"></i> · 0{" "}
+            <i className="bi bi-share"></i>
           </Card.Text>
         </Card.Body>
         <Card.Footer>
-          <Row className='text-center'>
-            <Col>
-              <Button
-                onClick={() => handleLike(photo?.id)}
-                variant={hasLiked(photo?.id) ? "primary" : "light"}
-                className='w-100 custom-button'
-                style={{ borderRadius: "3px" }}>
-                {hasLiked(photo?.id) ? "Liked" : "Like"}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                onClick={() => handleComment(photo?.id)}
-                variant='light'
-                className='w-100 custom-button'
-                style={{ borderRadius: "0" }}>
-                Comment
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                variant='light'
-                className='w-100 custom-button'
-                style={{ borderRadius: "0" }}>
-                Share
-              </Button>
-            </Col>
-          </Row>
+          <div className="text-center d-flex">
+            <Button
+              onClick={() => handleLike(photo?.id)}
+              variant={hasLiked(photo?.id) ? "primary" : "light"}
+              className="w-100 custom-button"
+              style={{ borderRadius: "3px" }}
+            >
+              {hasLiked(photo?.id) ? "Liked" : "Like"}
+            </Button>
+
+            <Button
+              onClick={() => handleComment(photo?.id)}
+              variant="light"
+              className="w-100 custom-button"
+              style={{ borderRadius: "0" }}
+            >
+              Comment
+            </Button>
+
+            <Button
+              variant="light"
+              className="w-100 custom-button"
+              style={{ borderRadius: "0" }}
+              onClick={handleShare}
+            >
+              Share
+            </Button>
+          </div>
         </Card.Footer>
-      </Card>
-    </Col>
+      </div>
+    </div>
   );
 }

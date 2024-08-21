@@ -1,8 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Modal, Row } from "react-bootstrap";
 
-export default function ShareFor() {
+export default function ShareFor({
+  show,
+  handleCloseShare,
+  handleShareSubmit,
+}) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -18,29 +22,32 @@ export default function ShareFor() {
     fetchUsers();
   }, []);
 
+  const shareFor = async (userId) => {
+    console.log(userId);
+  };
+
   return (
-    <Row className='d-flex justify-content-center align-items-center mt-4'>
-      <Col md={12}>
-        {users.map((user) => (
-          <Button
-            key={user?.id}
-            variant="outline-light" // Ensure this variant is defined or replace with another
-            className="m-1"
-            style={{
-              borderRadius: "0.25rem", // Adjust styling as needed
-              borderColor: "#e0e0e0",
-              color: "#333",
-              hover: {
-                backgroundColor: "#f8f9fa",
-                borderColor: "#ccc",
-              },
-            }}
-            onClick={() => console.log(`Selected user: ${user?.name}`)} // Placeholder click action
-          >
-            {user?.name}
-          </Button>
-        ))}
-      </Col>
-    </Row>
+    <>
+      <Modal show={show} onHide={handleCloseShare}>
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>
+          <Modal.Title className='mb-4'>Share for someone in here</Modal.Title>
+          <Row className='d-flex justify-content-center align-items-center mt-4'>
+            <Col md={12}>
+              {users.map((user) => (
+                <Button
+                  variant='outline'
+                  onClick={() => shareFor(user?.userId)}>
+                  <Card className='m-4'>
+                    <Card.Img />
+                    <Card.Body>{user.name}</Card.Body>
+                  </Card>
+                </Button>
+              ))}
+            </Col>
+          </Row>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }

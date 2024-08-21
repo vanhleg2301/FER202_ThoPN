@@ -13,6 +13,8 @@ import ErrorPage from "./components/pages/error/ErrorPage";
 import AlbumPhoto from "./components/pages/album/AlbumPhoto";
 import ChatRoom from "./components/pages/chat/ChatRoom";
 import ActiveCode from "./components/pages/sign/ActiveCode";
+import PrivateRoute from "./components/router/PrivateRoute";
+import PublicRoute from "./components/router/PublicRoute";
 
 function App() {
   return (
@@ -21,16 +23,27 @@ function App() {
         <Routes>
           <Route element={<ErrorPage />} />
           <Route element={<Layout />}>
-            <Route path='/' element={<Home />} />{" "}
-            <Route path='/auth/login' element={<Login />} />
-            <Route path='/auth/regis' element={<Regis />} />
-            <Route path='/auth/active-code/:activeCode' element={<ActiveCode />} />
+
+            <Route element={<PublicRoute />}>
+              <Route path='/auth/login' element={<Login />} />
+              <Route path='/auth/regis' element={<Regis />} />
+            </Route>
+
+            <Route
+              path='/auth/active-code/:activeCode'
+              element={<ActiveCode />}
+            />
+            <Route path='/' element={<Home />} />
             <Route path='/auth/forgot' element={<Forgot />} />
-            <Route path='/auth/profile' element={<Profile />} />
-            <Route path='/album' element={<Album />} />
-            <Route path='/album/:albumId' element={<AlbumPhoto />} />
             <Route path='/photo/:photoId' element={<PhotoDetail />} />
-            <Route path='/chat' element={<ChatRoom />} />
+
+            <Route element={<PrivateRoute />}>
+              <Route path='/auth/profile' element={<Profile />} />
+              <Route path='/album' element={<Album />} />
+              <Route path='/album/:albumId' element={<AlbumPhoto />} />
+              <Route path='/chat' element={<ChatRoom />} />
+            </Route>
+
           </Route>
         </Routes>
       </Router>

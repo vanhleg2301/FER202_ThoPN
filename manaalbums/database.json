@@ -172,7 +172,11 @@
         "share": 2
       },
       "albumId": 1,
-      "tags": ["summer", "hot", "new"]
+      "tags": [
+        "summer",
+        "hot",
+        "new"
+      ]
     },
     {
       "id": 2,
@@ -194,7 +198,11 @@
         "share": 2
       },
       "albumId": 1,
-      "tags": ["summer", "hot", "new"]
+      "tags": [
+        "summer",
+        "hot",
+        "new"
+      ]
     },
     {
       "id": 3,
@@ -208,7 +216,7 @@
           "https://via.placeholder.com/600/92c952",
           "https://via.placeholder.com/600/f9cee5"
         ],
-        "thumbnail": "https://via.placeholder.com/600/56a8c2"
+        "thumbnail": "p1_2.jpg"
       },
       "activity": {
         "like": 3,
@@ -216,7 +224,11 @@
         "share": 2
       },
       "albumId": 2,
-      "tags": ["summer", "hot", "new"]
+      "tags": [
+        "summer",
+        "hot",
+        "new"
+      ]
     },
     {
       "id": 4,
@@ -230,7 +242,7 @@
           "https://via.placeholder.com/600/f9cee5",
           "https://via.placeholder.com/600/24f355"
         ],
-        "thumbnail": "https://via.placeholder.com/600/771796"
+        "thumbnail": "p1_3.jpg"
       },
       "activity": {
         "like": 3,
@@ -238,7 +250,11 @@
         "share": 2
       },
       "albumId": 2,
-      "tags": ["summer", "hot", "new"]
+      "tags": [
+        "summer",
+        "hot",
+        "new"
+      ]
     },
     {
       "id": 5,
@@ -260,7 +276,11 @@
         "share": 2
       },
       "albumId": 3,
-      "tags": ["summer", "hot", "new"]
+      "tags": [
+        "summer",
+        "hot",
+        "new"
+      ]
     },
     {
       "id": 6,
@@ -274,7 +294,7 @@
           "https://via.placeholder.com/600/92c952",
           "https://via.placeholder.com/600/f9cee5"
         ],
-        "thumbnail": "https://via.placeholder.com/600/56a8c2"
+        "thumbnail": "p2_2.jpg"
       },
       "activity": {
         "like": 3,
@@ -282,7 +302,11 @@
         "share": 2
       },
       "albumId": 3,
-      "tags": ["summer", "hot", "new"]
+      "tags": [
+        "summer",
+        "hot",
+        "new"
+      ]
     },
     {
       "id": 7,
@@ -306,7 +330,11 @@
         "shares": 0
       },
       "albumId": 3,
-      "tags": ["summer", "hot", "new"]
+      "tags": [
+        "summer",
+        "hot",
+        "new"
+      ]
     },
     {
       "id": 8,
@@ -333,7 +361,11 @@
         "shares": 0
       },
       "albumId": 4,
-      "tags": ["summer", "hot", "new"]
+      "tags": [
+        "summer",
+        "hot",
+        "new"
+      ]
     },
     {
       "id": 10,
@@ -358,7 +390,11 @@
         "thumbnail": "p1.jpg"
       },
       "albumId": 6,
-      "tags": ["summer", "hot", "new"]
+      "tags": [
+        "summer",
+        "hot",
+        "new"
+      ]
     }
   ],
   "comments": [
@@ -460,6 +496,16 @@
         8
       ],
       "id": 4
+    },
+    {
+      "photoId": 6,
+      "userIds": [],
+      "id": 5
+    },
+    {
+      "photoId": 5,
+      "userIds": [],
+      "id": 6
     }
   ],
   "shares": [

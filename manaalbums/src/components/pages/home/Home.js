@@ -9,14 +9,16 @@ import AlbumFilter from "./AlbumFilter";
 import CommentModal from "./CommentModal";
 import ShareFor from "./ShareFor";
 import AuthContext from "../../../context/Context";
+import './Home.css';
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 9;
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
   const [likedPhotos, setLikedPhotos] = useState({});
   const [likesData, setLikesData] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showModalShare, setShowModalShare] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [comments, setComments] = useState([]);
   const [commentsData, setCommentsData] = useState([]);
@@ -187,6 +189,22 @@ export default function Home() {
     }
   };
 
+  // Xử lý share
+  const handleShare = async () => {
+    const userId = user?.userId;
+    if (!userId) {
+      alert("User is not logged in");
+      return;
+    }
+    setShowModalShare(true);
+  };
+
+  const handleShareSubmit = async (e) => {
+    e.preventDefault();
+  };
+
+  const handleCloseShare = () => setShowModalShare(false);
+
   // Xử lý Modal
   const handleClose = () => setShowModal(false);
 
@@ -227,49 +245,46 @@ export default function Home() {
     .slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <Container fluid className='mt-4'>
+    <Container fluid>
       <Row>
-        <Col md={2}></Col>
-
-        <Col md={8} className='d-flex justify-content-center'>
+        <Col md={12}>
+          <Search onSearch={(query) => setSearchQuery(query)} />
+        </Col>
+        <Col md={12}>
+          <div>
+            <Create />
+          </div>
+        </Col>
+        <Col className='d-flex justify-content-center mt-3' md={12}>
           <AlbumFilter
             albums={albums}
             selectedAlbumId={selectedAlbumId}
             handleAlbumSelect={handleAlbumSelect}
           />
         </Col>
-        <Col md={2}></Col>
       </Row>
       <Row>
-        <Col md={2}>
-          <Search onSearch={(query) => setSearchQuery(query)} />
-        </Col>
-        <Col md={8}>
-          <div>
-            <Create />
-          </div>
-
-          <div className='mt-3'>
+        <Col md={12}>
+          <div className='photo-card-container'>
             {currentPhotos?.map((photo) => (
+              <div key={photo?.id}>
               <PhotoCard
-                key={photo?.id}
                 photo={photo}
                 likesData={likesData}
                 setLikesData={setLikesData}
                 likedPhotos={likedPhotos}
                 handleLike={handleLike}
                 handleComment={handleComment}
+                handleShare={handleShare}
                 users={users}
                 getUserNameByAlbumId={getUserNameByAlbumId}
                 getAlbumDescription={getAlbumDescription}
                 commentsData={commentsData}
                 albums={albums}
               />
+               </div>
             ))}
           </div>
-        </Col>
-        <Col md={2}>
-          <ShareFor />
         </Col>
       </Row>
 
@@ -296,6 +311,12 @@ export default function Home() {
         newRating={newRating}
         setNewRating={setNewRating}
         handleCommentSubmit={handleCommentSubmit}
+      />
+
+      <ShareFor
+        show={showModalShare}
+        handleCloseShare={handleCloseShare}
+        handleShareSubmit={handleShareSubmit}
       />
     </Container>
   );

@@ -11,9 +11,9 @@ export default function Search({ onSearch }) {
   };
 
   return (
-    <Row className='mt-4'>
+    <Row className='mb-4'>
       <Col md={12}>
-        <div style={{ width: "200px" }}>
+        <div style={{ width: "100%" }}>
           <Form>
             <Form.Control
               size='lg'

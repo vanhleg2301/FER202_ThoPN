@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Row, Card, Button, Form, Alert } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { decrypt } from "../../../constants/key";
 
 export default function Login() {
@@ -12,9 +12,11 @@ export default function Login() {
   const [active, setActive] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    navigate('/auth/login', { state: { from: location.pathname } });
     setLoading(true);
 
     // Clear previous errors
@@ -31,7 +33,9 @@ export default function Login() {
         setActive(
           <>
             <Alert variant='danger'>
-              <h6>Your account is not active yet. Check code active in your email</h6>
+              <h6>
+                Your account is not active yet. Check code active in your email
+              </h6>
             </Alert>
           </>
         );

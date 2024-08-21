@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Row, Card, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { encrypt } from "../../../constants/key";
 import { sendActivationEmail } from "./mail";
 
@@ -15,9 +15,12 @@ export default function Regis() {
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    navigate("/auth/regis", { state: { from: location.pathname } });
+
     setLoading(true);
 
     // Clear previous errors
@@ -102,7 +105,6 @@ export default function Regis() {
       setLoading(false);
     }
   };
-
 
   return (
     <>

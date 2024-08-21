@@ -1,0 +1,12 @@
+
+
+POST http://localhost:9999/login
+
+{
+    "email": "123@123",
+    "password": "123"
+}
+
+###
+GET http://localhost:9999/profile/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNDIxNjYyNSwiZXhwIjoxNzI0MjE2NzQ1fQ.Oy_cSBLoLq9aKLqMvw4Fba2n9pd4tanPf4VG52N4gxQ
