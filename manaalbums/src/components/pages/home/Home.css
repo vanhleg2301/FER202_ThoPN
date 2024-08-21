@@ -1,21 +1,14 @@
-
-
 .photo-card-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Four columns layout */
-  gap: 15px; /* Space between items */
+  column-count: 3; /* Three columns layout */
+  column-gap: 15px; /* Space between columns */
   margin: 0 auto; /* Center the grid container */
 }
 
 .photo-card-container > div {
-  max-height: auto; /* Adjust as needed */
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  break-inside: avoid-column; /* Prevent breaking inside columns */
+  margin-bottom: 15px; /* Space between cards */
+  display: inline-block;
+  width: 100%;
   border-radius: 8px; /* Rounded corners for the card */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Card shadow */
 }
-
-
-
-
