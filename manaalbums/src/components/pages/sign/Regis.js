@@ -81,7 +81,7 @@ export default function Regis() {
       });
 
       // Send activation email
-      sendActivationEmail(email, activeCode);
+      sendActivationEmail("Active Code", email, activeCode);
 
       toast.success(
         "Registration successful! Check your email for the activation code.",

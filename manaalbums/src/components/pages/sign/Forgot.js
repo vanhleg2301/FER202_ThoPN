@@ -1,30 +1,70 @@
-import React, { useState } from 'react';
-import { Col, Row, Card, Button, Form } from 'react-bootstrap';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Col, Row, Card, Button, Form } from "react-bootstrap";
+import axios from "axios";
+import { sendResetPasswordEmail } from "./mail";
+import { encrypt } from "../../../constants/key";
 
 export default function Forgot() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     setLoading(true);
 
+    const generateRandomPassword = (length = 7) => {
+      const charset =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let password = "";
+
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+      }
+
+      return password;
+    };
+
+    const newPassword = generateRandomPassword(); // Generate a random 7-character password
+
     try {
-      // Send email to the backend to handle password reset
-      await axios.post('http://localhost:3000/send-reset-link', { email });
-      setMessage('If an account with that email exists, a password reset link will be sent.');
+      // Fetch user data from the database
+      const usersResponse = await axios.get(`http://localhost:9999/users`);
+      const users = usersResponse.data;
+      const user = users.find(user => user.account.email === email);
+
+      if (user) {
+        // Update the password in the database
+        await axios.put(`http://localhost:9999/users/${user?.id}`, {
+          ...user, 
+          account: { 
+            ...user.account,
+            password: encrypt(newPassword),
+          },
+        });
+
+        // Send reset password email
+        sendResetPasswordEmail("Your Password", email, newPassword);
+
+        setMessage(
+          "If an account with that email exists, a new password has been set and sent to your email."
+        );
+      } else {
+        setMessage("No account found with that email.");
+      }
     } catch (error) {
-      console.error('Error sending password reset link:', error);
-      setMessage('An error occurred while trying to send the password reset link.');
+      console.error("Error sending password reset link:", error);
+      setMessage(
+        "An error occurred while trying to update the password or send the email."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className='d-flex justify-content-center align-items-center min-vh-100'>
+    <div className='d-flex justify-content-center align-items-center mt-4'>
       <Row className='w-100'>
         <Col md={{ span: 6, offset: 3 }}>
           <Card className='p-4 shadow-lg'>
@@ -46,7 +86,7 @@ export default function Forgot() {
                   type='submit'
                   className='w-100'
                   disabled={loading}>
-                  {loading ? 'Sending...' : 'Send Password Reset Link'}
+                  {loading ? "Sending..." : "Send Password Reset Link"}
                 </Button>
               </Form>
               {message && (

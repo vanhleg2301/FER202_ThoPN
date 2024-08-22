@@ -15,6 +15,7 @@ import ChatRoom from "./components/pages/chat/ChatRoom";
 import ActiveCode from "./components/pages/sign/ActiveCode";
 import PrivateRoute from "./components/router/PrivateRoute";
 import PublicRoute from "./components/router/PublicRoute";
+import Change from "./components/pages/sign/Change";
 
 function App() {
   return (
@@ -23,7 +24,6 @@ function App() {
         <Routes>
           <Route element={<ErrorPage />} />
           <Route element={<Layout />}>
-
             <Route element={<PublicRoute />}>
               <Route path='/auth/login' element={<Login />} />
               <Route path='/auth/regis' element={<Regis />} />
@@ -33,17 +33,17 @@ function App() {
               path='/auth/active-code/:activeCode'
               element={<ActiveCode />}
             />
+            <Route path='/auth/forgot-password' element={<Forgot />} />
             <Route path='/' element={<Home />} />
-            <Route path='/auth/forgot' element={<Forgot />} />
             <Route path='/photo/:photoId' element={<PhotoDetail />} />
 
             <Route element={<PrivateRoute />}>
+              <Route path='/auth/change-password' element={<Change />} />
               <Route path='/auth/profile' element={<Profile />} />
               <Route path='/album' element={<Album />} />
               <Route path='/album/:albumId' element={<AlbumPhoto />} />
               <Route path='/chat' element={<ChatRoom />} />
             </Route>
-
           </Route>
         </Routes>
       </Router>

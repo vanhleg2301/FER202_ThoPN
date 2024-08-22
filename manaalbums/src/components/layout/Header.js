@@ -83,6 +83,9 @@ export default function Header() {
                     <Nav.Link as={Link} to='/auth/profile'>
                       Profile
                     </Nav.Link>
+                    <Nav.Link as={Link} to='/auth/change-password'>
+                      Change Password
+                    </Nav.Link>
                     <Nav.Link onClick={logout}>Logout</Nav.Link>
                   </div>
                 </div>

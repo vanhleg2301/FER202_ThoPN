@@ -22,7 +22,6 @@ export default function CommentModal({
     const userCom = users.find((u) => u.id === userId); // Make sure this property matches the actual user ID in the `users` array
     return userCom?.name || "Unknown User";
   };
-  console.log(selectedPhoto)
 
   return (
     <Modal show={showModal} onHide={handleClose}>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Row, Card, Button, Form, Alert } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { decrypt } from "../../../constants/key";
 
 export default function Login() {
@@ -16,7 +16,7 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    navigate('/auth/login', { state: { from: location.pathname } });
+    navigate("/auth/login", { state: { from: location.pathname } });
     setLoading(true);
 
     // Clear previous errors
@@ -55,9 +55,9 @@ export default function Login() {
               avatar: user?.avatar,
               account: {
                 email: user?.account?.email,
-                // password: user?.account?.password,
+                // password: "",
                 // activeCode: user?.account?.activeCode,
-                // isActive: user?.account?.isActive,
+                isActive: user?.account?.isActive,
               },
               address: {
                 street: user?.address?.street,
@@ -129,7 +129,12 @@ export default function Login() {
                     </Form.Text>
                   )}
                 </Form.Group>
-
+                {/* Forgot Password Link */}
+                <div className='d-flex justify-content-between mb-3'>
+                  <Link to='/auth/forgot-password' className='text-primary'>
+                    Forgot Password?
+                  </Link>
+                </div>
                 <Button
                   variant='primary'
                   type='submit'

@@ -67,7 +67,7 @@
       "name": "vanh",
       "avatar": "logo192.png",
       "account": {
-        "email": "vanhleg697@gmail.com",
+        "email": "vanhleg69711@gmail.com",
         "password": "U2FsdGVkX19C1OSW1mup5y0+30f51Iq8eO5ToEIgHi0=",
         "isActive": true
       },
@@ -109,6 +109,22 @@
         "city": "",
         "zipCode": ""
       }
+    },
+    {
+      "id": 9,
+      "userId": 9,
+      "name": "vanh123456",
+      "avatar": "p3_2.jpg",
+      "account": {
+        "email": "vanhleg697@gmail.com",
+        "password": "U2FsdGVkX1+8lkGdivNIDPiFEj0C4p3Kyp3Y81P+pVM=",
+        "isActive": true
+      },
+      "address": {
+        "street": "Thái Hà",
+        "city": "Hà Nội",
+        "zipCode": 100000
+      }
     }
   ],
   "albums": [
@@ -147,6 +163,18 @@
       "albumsId": 6,
       "description": "From Vanh 2",
       "userId": 6
+    },
+    {
+      "id": 7,
+      "albumsId": 7,
+      "description": "123",
+      "userId": 9
+    },
+    {
+      "id": 8,
+      "albumsId": 8,
+      "description": "2024",
+      "userId": 9
     }
   ],
   "photos": [
@@ -368,33 +396,39 @@
       ]
     },
     {
-      "id": 10,
-      "photoId": null,
-      "title": "From Vanh 2",
+      "id": 9,
+      "photoId": 9,
+      "title": "123",
       "images": {
-        "imageId": null,
+        "imageId": 9,
         "url": [
-          "p1.jpg",
-          "p1_1.jpg",
-          "p2_1.jpg",
-          "p2_2.jpg",
-          "p2_3.jpg",
-          "p2_4.jpg",
-          "p3.jpg",
-          "p3_2.jpg",
-          "p4.jpg",
-          "p4_1.jpg",
-          "p4_2.jpg",
-          "p5.jpg"
+          "p5.jpg",
+          "p5.jpg",
+          "p5_2.jpg",
+          "p5_3.jpg"
         ],
-        "thumbnail": "p1.jpg"
+        "thumbnail": "p5.jpg"
       },
-      "albumId": 6,
-      "tags": [
-        "summer",
-        "hot",
-        "new"
-      ]
+      "albumId": 7,
+      "tags": []
+    },
+    {
+      "id": 10,
+      "photoId": 10,
+      "title": "2024",
+      "images": {
+        "imageId": 10,
+        "url": [
+          "p3_1.jpg",
+          "p4_2.jpg",
+          "p5.jpg",
+          "p5_1.jpg",
+          "p5_3.jpg"
+        ],
+        "thumbnail": "p3_1.jpg"
+      },
+      "albumId": 8,
+      "tags": []
     }
   ],
   "comments": [

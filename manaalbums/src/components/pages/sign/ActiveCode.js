@@ -1,73 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import { ENDPOINT } from "../../../constants/Endpoint";
 import { decrypt } from "../../../constants/key";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Button, Form } from "react-bootstrap";
 
 export default function ActiveCode() {
-  const { activeCode } = useParams(); // Get the activation code from the URL
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState(null); // Track the message to display
-  const [navigating, setNavigating] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [navigating, setNavigating] = useState(false);
+  const [inputCode, setInputCode] = useState(""); // State to hold the user's input code
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const activateAccount = async () => {
-      try {
-        // Fetch the list of users
-        const { data: users } = await axios.get(`${ENDPOINT}/users`);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Start loading when the user submits the code
 
-        // Find the user with the corresponding activation code
-        const foundUser = users.find((user) => {
-          const decryptedCode = decrypt(user.account?.activeCode);
-          console.log("Decrypted code:", decryptedCode); // Log decrypted code
-          return decryptedCode === activeCode;
-        });
+    try {
+      // Fetch the list of users
+      const { data: users } = await axios.get(`${ENDPOINT}/users`);
 
-        console.log("Found user:", foundUser); // Log found user
+      // Find the user with the corresponding activation code
+      const foundUser = users.find((user) => {
+        const decryptedCode = decrypt(user.account?.activeCode);
+        return decryptedCode === inputCode;
+      });
 
-        if (foundUser) {
-          // Update user status and remove the activation code property
-          const updatedUser = {
-            ...foundUser,
-            account: {
-              ...foundUser.account,
-              isActive: true,
-              activeCode: null, // Set activeCode to null
-            },
-          };
+      if (foundUser) {
+        // Update user status and remove the activation code property
+        const updatedUser = {
+          ...foundUser,
+          account: {
+            ...foundUser.account,
+            isActive: true,
+            activeCode: null, // Set activeCode to null
+          },
+        };
 
-          // Remove activeCode property from the account object
-          delete updatedUser.account.activeCode;
+        // Remove activeCode property from the account object
+        delete updatedUser?.account?.activeCode;
 
-          await axios.put(`${ENDPOINT}/users/${foundUser.id}`, updatedUser);
+        await axios.put(`${ENDPOINT}/users/${foundUser.id}`, updatedUser);
 
-          setNavigating(true);
+        setNavigating(true);
 
-          setMessage(
-            "Your account has been activated successfully! Redirecting to login..."
-          );
-
-          setTimeout(() => {
-            navigate("/auth/login");
-          }, 2000);
-        } else {
-          setMessage("Invalid activation code or account already activated.");
-        }
-      } catch (error) {
         setMessage(
-          "An error occurred during activation. Please try again later."
+          "Your account has been activated successfully! Redirecting to login..."
         );
-      } finally {
-        setLoading(false); // Stop loading regardless of the outcome
-      }
-    };
 
-    activateAccount();
-  }, [activeCode, navigate]);
-  
+        setTimeout(() => {
+          navigate("/auth/login");
+        }, 2000);
+      } else {
+        setMessage("Invalid activation code or account already activated.");
+      }
+    } catch (error) {
+      setMessage(
+        "An error occurred during activation. Please try again later."
+      );
+    } finally {
+      setLoading(false); // Stop loading regardless of the outcome
+    }
+  };
+
   if (navigating) {
     return (
       <div className='d-flex justify-content-center align-items-center min-vh-100'>
@@ -75,13 +71,29 @@ export default function ActiveCode() {
       </div>
     );
   }
+
   return (
-    <div className='d-flex justify-content-center align-items-center'>
+    <div className='d-flex flex-column justify-content-center align-items-center mt-4'>
       <ToastContainer />
+      <Form onSubmit={handleSubmit} className='w-50'>
+        <Form.Group controlId='formActiveCode'>
+          <Form.Label>Enter Activation Code</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter the activation code sent to your email'
+            value={inputCode}
+            onChange={(e) => setInputCode(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Button variant='primary' type='submit' className='mt-3'>
+          Activate Account
+        </Button>
+      </Form>
       {loading ? (
-        <h4>Activating your account, please wait...</h4>
+        <h4 className='mt-4'>Activating your account, please wait...</h4>
       ) : (
-        <h4>{message}</h4> // Display the appropriate message based on the state
+        message && <h4 className='mt-4'>{message}</h4>
       )}
     </div>
   );
