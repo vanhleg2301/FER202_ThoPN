@@ -41,7 +41,7 @@ export default function ActiveCode() {
         // Remove activeCode property from the account object
         delete updatedUser?.account?.activeCode;
 
-        await axios.put(`${ENDPOINT}/users/${foundUser.id}`, updatedUser);
+        await axios.put(`${ENDPOINT}/users/${foundUser?.id}`, updatedUser);
 
         setNavigating(true);
 

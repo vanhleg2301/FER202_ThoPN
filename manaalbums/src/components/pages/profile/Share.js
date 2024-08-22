@@ -36,7 +36,7 @@ export default function Share() {
     };
 
     fetchData();
-  }, [user.userId]);
+  }, [user?.userId]);
 
   const getPhotoDetails = (photoId) => {
     return photos.find((photo) => photo.id === photoId);
@@ -54,7 +54,7 @@ export default function Share() {
           const photo = getPhotoDetails(share.photoId);
           return (
             <Col key={share.id} md={4}>
-              <Card>
+              <Card className="mt-2">
                 <Card.Img variant='top' src={photo?.url} />
                 <Card.Body>
                   <Card.Title>
@@ -79,10 +79,12 @@ export default function Share() {
           const user = getUserDetails(share.userId);
           return (
             <Col key={share.id} md={4}>
-              <Card>
+              <Card className="mt-2">
                 <Card.Img variant='top' src={photo?.url} />
                 <Card.Body>
-                  <Card.Title>{photo?.title}</Card.Title>
+                  <Link to={`http://localhost:3000/photo/${photo?.id}`}>
+                    <Card.Title>{photo?.title}</Card.Title>
+                  </Link>
                   <Card.Text>Shared by: {user?.name}</Card.Text>
                 </Card.Body>
               </Card>

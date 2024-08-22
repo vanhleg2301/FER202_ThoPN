@@ -133,7 +133,7 @@
       "avatar": "logo192.png",
       "account": {
         "email": "vanhleg697@gmail.com",
-        "password": "U2FsdGVkX19wTtyFnQfK0qlln9OWJVmY8A4OFVFN7wM=",
+        "password": "U2FsdGVkX18l1iHZAQ9vX4tiVwRT3vjVK0bz28fs8Hk=",
         "isActive": true
       },
       "address": {
@@ -179,6 +179,12 @@
       "albumsId": 7,
       "description": "123 321",
       "userId": 9
+    },
+    {
+      "id": 8,
+      "albumsId": 8,
+      "description": "Spring 2024",
+      "userId": 10
     }
   ],
   "photos": [
@@ -429,6 +435,43 @@
       },
       "albumId": "7",
       "tags": []
+    },
+    {
+      "id": 11,
+      "photoId": 11,
+      "title": "Spring 2024",
+      "images": {
+        "imageId": 11,
+        "url": [
+          "p1_3.jpg",
+          "p2_4.jpg",
+          "p3.jpg",
+          "p4_1.jpg",
+          "p5_3.jpg"
+        ],
+        "thumbnail": "p1_3.jpg"
+      },
+      "albumId": 8,
+      "tags": []
+    },
+    {
+      "id": 12,
+      "photoId": 12,
+      "title": "spring 2024 v2",
+      "images": {
+        "imageId": 12,
+        "url": [
+          "p1_2.jpg",
+          "p2_3.jpg",
+          "p2_4.jpg",
+          "p3.jpg",
+          "p4_1.jpg",
+          "p4_2.jpg"
+        ],
+        "thumbnail": "p1_2.jpg"
+      },
+      "albumId": "8",
+      "tags": []
     }
   ],
   "comments": [
@@ -508,6 +551,13 @@
       "rate": 1,
       "userId": 8,
       "id": 19
+    },
+    {
+      "photoId": 1,
+      "text": "good",
+      "rate": 3,
+      "userId": 10,
+      "id": 20
     }
   ],
   "likes": [
@@ -517,7 +567,8 @@
       "userIds": [
         1,
         2,
-        5
+        5,
+        10
       ]
     },
     {
@@ -563,6 +614,13 @@
         8
       ],
       "id": 7
+    },
+    {
+      "photoId": 11,
+      "userIds": [
+        10
+      ],
+      "id": 8
     }
   ],
   "shares": [
@@ -613,6 +671,12 @@
       "userId": 9,
       "sharedWithUserIds": 1,
       "id": 8
+    },
+    {
+      "photoId": 8,
+      "userId": 10,
+      "sharedWithUserIds": 10,
+      "id": 9
     }
   ],
   "chats": [

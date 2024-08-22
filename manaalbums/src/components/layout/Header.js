@@ -66,33 +66,35 @@ export default function Header() {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
-            <Nav.Link as={Link} to='/share' style={{marginRight: 10}}>
-                    <i class="bi bi-share-fill"></i>
-                    </Nav.Link>
+
             <Nav>
               {isLoggedIn ? (
-                <div className='avatar-menu-wrapper'>
-                  <Link className='avatar-link'>
-                    <Image
-                      height={40}
-                      width={40}
-                      roundedCircle
-                      src={"/assets/images/" + user?.avatar}
-                      alt='User Avatar'
-                      className='avatar-img'
-                    />
-                  </Link>
-                  <div className='avatar-menu'>
-                    
-                    <Nav.Link as={Link} to='/auth/profile'>
-                      Profile
-                    </Nav.Link>
-                    <Nav.Link as={Link} to='/auth/change-password'>
-                      Change Password
-                    </Nav.Link>
-                    <Nav.Link onClick={logout}>Logout</Nav.Link>
+                <>
+                  <Nav.Link as={Link} to='/share' style={{ marginRight: 10 }}>
+                    <i class='bi bi-share-fill'></i>
+                  </Nav.Link>
+                  <div className='avatar-menu-wrapper'>
+                    <Link className='avatar-link'>
+                      <Image
+                        height={40}
+                        width={40}
+                        roundedCircle
+                        src={"/assets/images/" + user?.avatar}
+                        alt='User Avatar'
+                        className='avatar-img'
+                      />
+                    </Link>
+                    <div className='avatar-menu'>
+                      <Nav.Link as={Link} to='/auth/profile'>
+                        Profile
+                      </Nav.Link>
+                      <Nav.Link as={Link} to='/auth/change-password'>
+                        Change Password
+                      </Nav.Link>
+                      <Nav.Link onClick={logout}>Logout</Nav.Link>
+                    </div>
                   </div>
-                </div>
+                </>
               ) : (
                 <>
                   <Nav.Link as={Link} to='/auth/login'>
