@@ -45,7 +45,7 @@ export default function Header() {
             </div>
           )*/}
             <Nav.Link className='m-2' onClick={handleModalCreate}>
-              Create
+              Create album
             </Nav.Link>
             {isLoggedIn && (
               <Nav.Link className='m-2' as={Link} to='/album'>

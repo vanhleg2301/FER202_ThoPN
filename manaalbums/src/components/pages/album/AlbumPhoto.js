@@ -12,18 +12,24 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import AuthContext from "../../../context/Context";
 import AlbumPhotoModal from "./AlbumPhotoModal";
+import PhotoUploadModal from "./PhotoUploadModal";
 
 export default function AlbumPhoto() {
   const { albumId } = useParams();
   const { user } = useContext(AuthContext);
   const [photos, setPhotos] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [uploadModalShow, setUploadModalShow] = useState(false); // State for upload modal
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // To track the image within the selected photo
   const [selectImage, setSelectImage] = useState(null);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState("");
+
+  const [title, setTitle] = useState("");
+  const [tags, setTags] = useState([]);
+  const [files, setFiles] = useState([]);
 
   useEffect(() => {
     if (!user) return; // Do nothing if user is not loaded yet
@@ -60,6 +66,7 @@ export default function AlbumPhoto() {
   };
 
   const handleModalClose = () => setModalShow(false);
+  const handleUploadModalClose = () => setUploadModalShow(false);
 
   const handlePrevious = () => {
     const newIndex =
@@ -90,7 +97,7 @@ export default function AlbumPhoto() {
     setEditTitle(e.target.value);
   };
 
-  const handleSaveTitle = (id) => {
+  const handleSaveTitle = async (id) => {
     axios
       .patch(`http://localhost:9999/photos/${id}`, {
         title: editTitle,
@@ -107,6 +114,69 @@ export default function AlbumPhoto() {
         console.error("Error updating photo title:", error);
         setError("Failed to update title");
       });
+  };
+
+  const handleCreatePhoto = async (selectedFiles) => {
+
+    if (!user) {
+      alert("You must be logged in to create an album.");
+      return;
+    }
+
+    if (!title.trim()) {
+      alert("Description cannot be empty.");
+      return;
+    }
+
+    if (selectedFiles.length === 0) {
+      alert("Please select at least one image to upload.");
+      return;
+    }
+    try {
+      const photoData = await axios.get("http://localhost:9999/photos");
+      const photos = photoData?.data || [];
+
+      const newId = photos[photos.length - 1].id + 1;
+      const newPhoto = photos[photos.length - 1].photoId + 1;
+      const newImage = photos[photos.length - 1].images.imageId + 1;
+      const newPhotos = {
+        id: newId,
+        photoId: newPhoto,
+        title: title,
+        images: {
+          imageId: newImage,
+          url: selectedFiles.map((file) => file?.name), // Store all file names as a flat array
+          thumbnail: selectedFiles[0]?.name, // First file as the thumbnail
+        },
+        albumId: albumId,
+        tags,
+      };
+      const createPhotosPromise = axios.post(
+        "http://localhost:9999/photos",
+        newPhotos
+      );
+      await Promise.all([createPhotosPromise]);
+      window.location.reload();
+      setUploadModalShow(false);
+    } catch (error) {
+      console.error("Error creating photo:", error);
+      setError("Failed to create photo");
+    }
+  };
+
+  const handleDeletePhoto = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this photo?"
+    );
+
+    if (confirmed) {
+      try {
+        await axios.delete(`http://localhost:9999/photos/${id}`);
+        setPhotos(photos?.filter((photo) => photo?.id !== id));
+      } catch (error) {
+        console.error("Error deleting album:", error);
+      }
+    }
   };
 
   const handleDeleteImage = (indexToDelete) => {
@@ -150,6 +220,13 @@ export default function AlbumPhoto() {
   return (
     <Container>
       <Row className='justify-content-center'>
+        <Col md={12}>
+          <div className='text-center mb-4'>
+          <Button variant='outline' onClick={() => setUploadModalShow(true)}>
+          Create new photo
+            </Button>
+          </div>
+        </Col>
         <Col md={8}>
           <Row>
             {photos?.map((photo, index) => (
@@ -212,6 +289,12 @@ export default function AlbumPhoto() {
                             onClick={() => handleEditClick(photo)}>
                             <i className='bi bi-pencil'></i> Edit
                           </Button>
+                          <Button
+                            variant='light'
+                            className='mr-2'
+                            onClick={() => handleDeletePhoto(photo)}>
+                            <i className='bi bi-trash'></i> Delete
+                          </Button>
                         </div>
                       </>
                     )}
@@ -232,6 +315,13 @@ export default function AlbumPhoto() {
         selectImage={selectImage}
         onDelete={() => handleDeleteImage(currentPhotoIndex)}
       />
+      <PhotoUploadModal
+      show={uploadModalShow}
+      onHide={handleUploadModalClose}
+      onCreate={handleCreatePhoto}
+      title={title}
+      setTitle={setTitle}
+    />
     </Container>
   );
 }

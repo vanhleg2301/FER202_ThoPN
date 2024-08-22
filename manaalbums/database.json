@@ -159,21 +159,9 @@
       "userId": 5
     },
     {
-      "id": 6,
-      "albumsId": 6,
-      "description": "From Vanh 2",
-      "userId": 6
-    },
-    {
       "id": 7,
       "albumsId": 7,
       "description": "123 321",
-      "userId": 9
-    },
-    {
-      "id": 8,
-      "albumsId": 8,
-      "description": "2024 123",
       "userId": 9
     }
   ],
@@ -415,19 +403,18 @@
     {
       "id": 10,
       "photoId": 10,
-      "title": "2024",
+      "title": "123",
       "images": {
         "imageId": 10,
         "url": [
-          "p3_1.jpg",
-          "p4_2.jpg",
-          "p5.jpg",
-          "p5_1.jpg",
-          "p5_3.jpg"
+          "p2_3.jpg",
+          "p2_4.jpg",
+          "p4_1.jpg",
+          "p4_2.jpg"
         ],
-        "thumbnail": "p3_1.jpg"
+        "thumbnail": "p2_3.jpg"
       },
-      "albumId": 8,
+      "albumId": "7",
       "tags": []
     }
   ],
