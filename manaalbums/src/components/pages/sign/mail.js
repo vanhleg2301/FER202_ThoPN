@@ -27,8 +27,9 @@ export const sendActivationEmail = (name, email, activeCode) => {
   const templateParams = {
     from_name: name,
     to_name: email,
-    activeCode: `http://localhost:3000/auth/active-code/${activeCode}`,
+    activeCode: activeCode,
     to_email: email,
+    link: "http://localhost:3000/auth/active-code",
   };
 
   emailjs

@@ -31,7 +31,7 @@ function App() {
             </Route>
 
             <Route
-              path='/auth/active-code/:activeCode'
+              path='/auth/active-code'
               element={<ActiveCode />}
             />
             <Route path='/auth/forgot-password' element={<Forgot />} />
