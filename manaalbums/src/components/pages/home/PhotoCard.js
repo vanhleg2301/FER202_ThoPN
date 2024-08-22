@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Card,
   Button,
@@ -11,13 +11,14 @@ import {
 import { Link } from "react-router-dom";
 import AuthContext from "../../../context/Context";
 import "./PhotoCard.css";
+import axios from "axios";
+import ShareFor from "./ShareFor";
 
 export default function PhotoCard({
   photo,
   likesData,
   handleLike,
   handleComment,
-  handleShare,
   users,
   getUserNameByAlbumId,
   getAlbumDescription,
@@ -25,6 +26,32 @@ export default function PhotoCard({
   albums,
 }) {
   const { user } = useContext(AuthContext);
+
+  const [showShareModal, setShowShareModal] = useState(false);
+
+  const handleShareClick = () => {
+    setShowShareModal(true);
+  };
+
+  const handleCloseShareModal = () => {
+    setShowShareModal(false);
+  };
+
+  const handleShareSubmit = async (userId) => {
+    try {
+      const shareFor = {
+        photoId: photo?.id,
+        userId: user?.userId,
+        sharedWithUserIds: userId,
+      };
+      console.log(shareFor);
+      await axios.post("http://localhost:9999/shares", shareFor);
+      // Close modal after sharing
+      setShowShareModal(false);
+    } catch (error) {
+      console.error("Error sharing photo:", error);
+    }
+  };
 
   const hasLiked = (photoId) => {
     const photoLikes = likesData?.find((like) => like?.photoId === photoId);
@@ -137,13 +164,19 @@ export default function PhotoCard({
               <Button
                 variant='light'
                 className='custom-button'
-                onClick={handleShare}>
+                onClick={handleShareClick}>
                 <i className='bi bi-share'></i>
               </Button>
             </div>
           </Col>
         </Row>
       </Card.Footer>
+      {/* Share Modal */}
+      <ShareFor
+        show={showShareModal}
+        handleCloseShare={handleCloseShareModal}
+        handleShareSubmit={handleShareSubmit}
+      />
     </div>
   );
 }

@@ -551,18 +551,7 @@
     {
       "photoId": 1,
       "userId": 1,
-      "sharedWithUserIds": [
-        2,
-        3
-      ]
-    },
-    {
-      "photoId": 2,
-      "userId": 2,
-      "sharedWithUserIds": [
-        1,
-        3
-      ]
+      "sharedWithUserIds": 2
     }
   ],
   "chats": [

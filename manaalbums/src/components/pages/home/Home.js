@@ -18,7 +18,6 @@ export default function Home() {
   const [likedPhotos, setLikedPhotos] = useState({});
   const [likesData, setLikesData] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [showModalShare, setShowModalShare] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [comments, setComments] = useState([]);
   const [commentsData, setCommentsData] = useState([]);
@@ -189,21 +188,6 @@ export default function Home() {
     }
   };
 
-  // Xử lý share
-  const handleShare = async () => {
-    const userId = user?.userId;
-    if (!userId) {
-      alert("User is not logged in");
-      return;
-    }
-    setShowModalShare(true);
-  };
-
-  const handleShareSubmit = async (e) => {
-    e.preventDefault();
-  };
-
-  const handleCloseShare = () => setShowModalShare(false);
 
   // Xử lý Modal
   const handleClose = () => setShowModal(false);
@@ -232,7 +216,7 @@ export default function Home() {
     .filter(
       (photo) =>
         (!selectedAlbumId || photo?.albumId === selectedAlbumId) &&
-        photo?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+        photo?.title?.toLowerCase().startsWith(searchQuery.toLowerCase())
     )
     .sort((a, b) => new Date(b?.date) - new Date(a?.date));
 
@@ -275,7 +259,6 @@ export default function Home() {
                 likedPhotos={likedPhotos}
                 handleLike={handleLike}
                 handleComment={handleComment}
-                handleShare={handleShare}
                 users={users}
                 getUserNameByAlbumId={getUserNameByAlbumId}
                 getAlbumDescription={getAlbumDescription}
@@ -313,11 +296,6 @@ export default function Home() {
         handleCommentSubmit={handleCommentSubmit}
       />
 
-      <ShareFor
-        show={showModalShare}
-        handleCloseShare={handleCloseShare}
-        handleShareSubmit={handleShareSubmit}
-      />
     </Container>
   );
 }
