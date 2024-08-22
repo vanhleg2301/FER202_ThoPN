@@ -185,6 +185,24 @@
       "albumsId": 8,
       "description": "Spring 2024",
       "userId": 10
+    },
+    {
+      "id": 9,
+      "albumsId": 9,
+      "description": "New",
+      "userId": 9
+    },
+    {
+      "id": 10,
+      "albumsId": 10,
+      "description": "Cat",
+      "userId": 9
+    },
+    {
+      "id": 11,
+      "albumsId": 11,
+      "description": "Dog",
+      "userId": 9
     }
   ],
   "photos": [
@@ -471,6 +489,65 @@
         "thumbnail": "p1_2.jpg"
       },
       "albumId": "8",
+      "tags": []
+    },
+    {
+      "id": 13,
+      "photoId": 13,
+      "title": "New",
+      "images": {
+        "imageId": 13,
+        "url": [
+          "p2_4.jpg",
+          "p4_1.jpg",
+          "p4_2.jpg",
+          "p5_3.jpg"
+        ],
+        "thumbnail": "p2_4.jpg"
+      },
+      "albumId": 9,
+      "tags": []
+    },
+    {
+      "id": 14,
+      "photoId": 14,
+      "title": "Cat",
+      "images": {
+        "imageId": 14,
+        "url": [
+          "3bea6d715751c1576518231ae680eba3.jpg",
+          "7d11b36d0affe25ee7520d4827c94925.jpg",
+          "9e04ac67d79713c00169e904f4ee0a2c.jpg",
+          "1900db8ce6de7e19e884c8b22d46e5ba.jpg",
+          "424303bef006eb35803ae00505248d7a.jpg",
+          "cfacccc85682b1109dadb0db2d8761a5.jpg",
+          "edd99335f5f03e221bf776f11717f1f2.jpg",
+          "f683c9cb0772b276d845205960cf698d.jpg",
+          "f914bd4e2c91a8363ecc57846c664e33.jpg",
+          "fd21405af1235d129f7ff6806d8c51a9.jpg"
+        ],
+        "thumbnail": "3bea6d715751c1576518231ae680eba3.jpg"
+      },
+      "albumId": 10,
+      "tags": []
+    },
+    {
+      "id": 15,
+      "photoId": 15,
+      "title": "Dog",
+      "images": {
+        "imageId": 15,
+        "url": [
+          "0d2f57e33779c96833ceb2f2ed8bc819.jpg",
+          "040fe5701abfba60935922c629eb7208.jpg",
+          "456f5fb46bc47cb05a0f5cd4961e6534.jpg",
+          "7168c267469c354544accfee333343fc.jpg",
+          "d1e8dba6158cb5bfe87a837c81d5e28d.jpg",
+          "f5228807af8f315ac0d88ec2f7d6e8cc.jpg"
+        ],
+        "thumbnail": "0d2f57e33779c96833ceb2f2ed8bc819.jpg"
+      },
+      "albumId": 11,
       "tags": []
     }
   ],

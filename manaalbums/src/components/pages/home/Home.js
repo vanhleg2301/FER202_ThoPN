@@ -226,7 +226,7 @@ export default function Home() {
     .filter(
       (photo) =>
         (!selectedAlbumId || photo?.albumId === selectedAlbumId) &&
-        photo?.title?.toLowerCase().startsWith(searchQuery.toLowerCase())
+        photo?.title?.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .sort((a, b) => new Date(b?.date) - new Date(a?.date));
 
