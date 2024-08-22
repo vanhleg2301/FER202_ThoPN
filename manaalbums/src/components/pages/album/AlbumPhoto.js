@@ -117,7 +117,6 @@ export default function AlbumPhoto() {
   };
 
   const handleCreatePhoto = async (selectedFiles) => {
-
     if (!user) {
       alert("You must be logged in to create an album.");
       return;
@@ -179,14 +178,24 @@ export default function AlbumPhoto() {
     }
   };
 
-  const handleDeleteImage = (indexToDelete) => {
+  const handleDeleteImage = async (indexToDelete) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this image?"
     );
     if (confirmed) {
-      setPhotos((prevPhotos) =>
-        prevPhotos.map((photo) =>
-          photo.id === photos[currentPhotoIndex].id
+      const photoId = photos[currentPhotoIndex].id;
+      const currentPhoto = photos[currentPhotoIndex];
+  
+      // Check if the photo has only one image
+      if (currentPhoto.images.url.length === 1) {
+        alert("Please delete the entire photo since it has only one image left.");
+        return;
+      }
+  
+      try {
+        // Delete the image from the UI
+        const updatedPhotos = photos.map((photo) =>
+          photo.id === photoId
             ? {
                 ...photo,
                 images: {
@@ -197,11 +206,27 @@ export default function AlbumPhoto() {
                 },
               }
             : photo
-        )
-      );
-      handleNext();
+        );
+        setPhotos(updatedPhotos);
+  
+        // Update the photo object on the server
+        await axios.patch(`http://localhost:9999/photos/${photoId}`, {
+          images: {
+            ...currentPhoto.images,
+            url: updatedPhotos.find((photo) => photo.id === photoId).images.url,
+          },
+        });
+  
+        // Move to the next image or close the modal if no more images
+        handleNext();
+      } catch (error) {
+        console.error("Error deleting image:", error);
+        setError("Failed to delete image");
+      }
     }
   };
+  
+  
 
   if (error) {
     return (
@@ -222,8 +247,8 @@ export default function AlbumPhoto() {
       <Row className='justify-content-center'>
         <Col md={12}>
           <div className='text-center mb-4'>
-          <Button variant='outline' onClick={() => setUploadModalShow(true)}>
-          Create new photo
+            <Button variant='primary' onClick={() => setUploadModalShow(true)}>
+              Create new photo
             </Button>
           </div>
         </Col>
@@ -268,20 +293,7 @@ export default function AlbumPhoto() {
                     ) : (
                       <>
                         <Card.Title>{photo?.title}</Card.Title>
-                        <div className='d-flex justify-content-between align-items-center mt-2 mb-2'>
-                          <Card.Text className='mb-0'>
-                            {photo?.activity?.like}{" "}
-                            <i className='bi bi-heart-fill'></i>
-                          </Card.Text>
-                          <Card.Text className='mb-0'>
-                            {photo?.activity?.comments}{" "}
-                            <i className='bi bi-chat-dots'></i>
-                          </Card.Text>
-                          <Card.Text className='mb-0'>
-                            {photo?.activity?.share}{" "}
-                            <i className='bi bi-share'></i>
-                          </Card.Text>
-                        </div>
+                        <div className='d-flex justify-content-between align-items-center mt-2 mb-2'></div>
                         <div className='text-center'>
                           <Button
                             variant='light'
@@ -292,7 +304,7 @@ export default function AlbumPhoto() {
                           <Button
                             variant='light'
                             className='mr-2'
-                            onClick={() => handleDeletePhoto(photo)}>
+                            onClick={() => handleDeletePhoto(photo?.photoId)}>
                             <i className='bi bi-trash'></i> Delete
                           </Button>
                         </div>
@@ -316,12 +328,12 @@ export default function AlbumPhoto() {
         onDelete={() => handleDeleteImage(currentPhotoIndex)}
       />
       <PhotoUploadModal
-      show={uploadModalShow}
-      onHide={handleUploadModalClose}
-      onCreate={handleCreatePhoto}
-      title={title}
-      setTitle={setTitle}
-    />
+        show={uploadModalShow}
+        onHide={handleUploadModalClose}
+        onCreate={handleCreatePhoto}
+        title={title}
+        setTitle={setTitle}
+      />
     </Container>
   );
 }
