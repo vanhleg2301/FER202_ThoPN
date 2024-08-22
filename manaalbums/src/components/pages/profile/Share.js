@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Card, Row, Col, Image } from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 import AuthContext from "../../../context/Context";
 import { Link } from "react-router-dom";
 

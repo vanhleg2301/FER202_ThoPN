@@ -3,7 +3,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Modal, Row } from "react-bootstrap";
 
-export default function ShareFor({ show, handleCloseShare, handleShareSubmit }) {
+export default function ShareFor({
+  show,
+  handleCloseShare,
+  handleShareSubmit,
+}) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -34,8 +38,13 @@ export default function ShareFor({ show, handleCloseShare, handleShareSubmit }) 
                   key={user?.userId}
                   onClick={() => handleShareSubmit(user?.userId)}>
                   <Card className='m-4'>
-                    <Card.Img src={user.avatar || "/assets/images/logo192.png"} />
-                    <Card.Body>{user.name}</Card.Body>
+                    <Card.Img
+                      src={
+                        "/assets/images/" + user?.avatar ||
+                        "/assets/images/logo192.png"
+                      }
+                    />
+                    <Card.Body>{user?.name}</Card.Body>
                   </Card>
                 </Button>
               ))}

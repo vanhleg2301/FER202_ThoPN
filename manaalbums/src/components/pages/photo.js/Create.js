@@ -50,6 +50,18 @@ export default function Create({ show, handleModalCreateClose }) {
       const newPhoto = photos[photos.length - 1].photoId + 1;
       const newImage = photos[photos.length - 1].images.imageId + 1;
 
+      // // Convert each file to a base64 string
+      // const base64Files = await Promise.all(
+      //   files.map((file) => {
+      //     return new Promise((resolve, reject) => {
+      //       const reader = new FileReader();
+      //       reader.readAsDataURL(file);
+      //       reader.onload = () => resolve(reader.result);
+      //       reader.onerror = (error) => reject(error);
+      //     });
+      //   })
+      // );
+      
       // Prepare form data for album creation
       const albumDataToSend = {
         id: newAlbumId,
@@ -85,6 +97,8 @@ export default function Create({ show, handleModalCreateClose }) {
       // Use Promise.all to wait for both requests to complete
       await Promise.all([createAlbumPromise, createPhotosPromise]);
 
+      // Upload images to "/assets/images" folder
+
       // Reset form fields
       setDescription("");
       setImagePreviews([]);
@@ -115,6 +129,7 @@ export default function Create({ show, handleModalCreateClose }) {
             <div className='d-flex align-items-start mb-3'>
               <div className='mr-2'>
                 <img
+                  accept='.jpg, .jpeg, .png'
                   src={"/assets/images/" + (user?.avatar || "logo192.png")} // Replace with actual user profile image URL
                   alt='Profile'
                   className='rounded-circle'
