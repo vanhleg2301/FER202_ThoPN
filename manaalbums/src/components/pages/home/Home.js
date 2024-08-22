@@ -9,7 +9,7 @@ import AlbumFilter from "./AlbumFilter";
 import CommentModal from "./CommentModal";
 import ShareFor from "./ShareFor";
 import AuthContext from "../../../context/Context";
-import './Home.css';
+import "./Home.css";
 
 const ITEMS_PER_PAGE = 15;
 
@@ -199,7 +199,6 @@ export default function Home() {
     }
   };
 
-
   // Xử lý Modal
   const handleClose = () => setShowModal(false);
 
@@ -243,14 +242,11 @@ export default function Home() {
     <Container fluid>
       <Row>
         <Col md={12}>
+          {/*Search*/}
           <Search onSearch={(query) => setSearchQuery(query)} />
         </Col>
-        <Col md={12}>
-          <div>
-            <Create />
-          </div>
-        </Col>
         <Col className='d-flex justify-content-center mt-3' md={12}>
+          {/*Filter by album*/}
           <AlbumFilter
             albums={albums}
             selectedAlbumId={selectedAlbumId}
@@ -258,32 +254,34 @@ export default function Home() {
           />
         </Col>
       </Row>
-      <Row className="mt-4">
+      <Row className='mt-4'>
+        {/*Photo card*/}
         <Col md={12}>
           <div className='photo-card-container'>
             {currentPhotos?.map((photo) => (
               <div key={photo?.id}>
-              <PhotoCard
-                photo={photo}
-                likesData={likesData}
-                setLikesData={setLikesData}
-                likedPhotos={likedPhotos}
-                handleLike={handleLike}
-                handleComment={handleComment}
-                sharedPhotos={sharedPhotos}
-                users={users}
-                getUserNameByAlbumId={getUserNameByAlbumId}
-                getAlbumDescription={getAlbumDescription}
-                commentsData={commentsData}
-                albums={albums}
-              />
-               </div>
+                <PhotoCard
+                  photo={photo}
+                  likesData={likesData}
+                  setLikesData={setLikesData}
+                  likedPhotos={likedPhotos}
+                  handleLike={handleLike}
+                  handleComment={handleComment}
+                  sharedPhotos={sharedPhotos}
+                  users={users}
+                  getUserNameByAlbumId={getUserNameByAlbumId}
+                  getAlbumDescription={getAlbumDescription}
+                  commentsData={commentsData}
+                  albums={albums}
+                />
+              </div>
             ))}
           </div>
         </Col>
       </Row>
 
       <Row>
+      {/*Pagination*/}
         <Col className='text-center'>
           <Pagination
             itemsPerPage={ITEMS_PER_PAGE}
@@ -295,6 +293,7 @@ export default function Home() {
         </Col>
       </Row>
 
+      {/*CommentModal*/}
       <CommentModal
         users={users}
         showModal={showModal}
@@ -307,7 +306,6 @@ export default function Home() {
         setNewRating={setNewRating}
         handleCommentSubmit={handleCommentSubmit}
       />
-
     </Container>
   );
 }
