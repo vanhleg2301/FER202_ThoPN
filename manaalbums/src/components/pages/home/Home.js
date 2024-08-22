@@ -11,7 +11,7 @@ import ShareFor from "./ShareFor";
 import AuthContext from "../../../context/Context";
 import './Home.css';
 
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 15;
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
@@ -263,7 +263,7 @@ export default function Home() {
           />
         </Col>
       </Row>
-      <Row>
+      <Row className="mt-4">
         <Col md={12}>
           <div className='photo-card-container'>
             {currentPhotos?.map((photo) => (

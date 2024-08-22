@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 
-export default function CreateModal({ show, handleClose, onImageChange  }) {
+export default function CreateModal({ show, handleClose, onImageChange }) {
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
 
@@ -29,13 +29,16 @@ export default function CreateModal({ show, handleClose, onImageChange  }) {
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId='formFileMultiple' className='mb-3'>
-            <Form.Label>Choose Images</Form.Label>
-            <Form.Control
-              type='file'
-              multiple
-              onChange={handleImageChange}
-              accept='image/*'
-            />
+            <Button variant='light' className='d-block mb-2'>
+              <Form.Control
+                type='file'
+                multiple
+                onChange={handleImageChange}
+                accept='image/*'
+                style={{ display: "none" }} // Hide the actual input
+              />
+              <Form.Label>Choose Images</Form.Label>
+            </Button>
           </Form.Group>
 
           {/* Display image previews */}
@@ -48,7 +51,11 @@ export default function CreateModal({ show, handleClose, onImageChange  }) {
                     src={preview}
                     alt={`preview-${index}`}
                     className='img-thumbnail mr-2'
-                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      objectFit: "cover",
+                    }}
                   />
                 ))}
               </div>

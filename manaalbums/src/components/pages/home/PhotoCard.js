@@ -49,103 +49,98 @@ export default function PhotoCard({
   };
 
   return (
-    <div className="mt-4">
-      <div className="photo-card">
-        <Card.Header>
-          <Row>
-            <Col xs={2}>
-              <Image
-                width={50}
-                height={50}
-                src={"/assets/images/" + getAvatarByAlbumId(photo?.albumId)}
-                alt={getUserNameByAlbumId(photo?.albumId)}
-                className="rounded-circle"
-              />
-            </Col>
-            <Col xs={10}>
-              <div>
-                <strong>{getUserNameByAlbumId(photo?.albumId)}</strong>
-              </div>
-              <div className="text-muted">
-                {getAlbumDescription(photo?.albumId)}
-              </div>
-            </Col>
-          </Row>
-        </Card.Header>
-        <Card.Body>
-          <div>
+
+      <div className='photo-card'>
+        <Card>
+          <Card.Header>
+            <Row>
+              <Col xs={2}>
+                <Image
+                  width={50}
+                  height={50}
+                  src={"/assets/images/" + getAvatarByAlbumId(photo?.albumId)}
+                  alt={getUserNameByAlbumId(photo?.albumId)}
+                  className='rounded-circle'
+                />
+              </Col>
+              <Col xs={10}>
+                <div style={{ color: "black" }}>
+                  <strong>{getUserNameByAlbumId(photo?.albumId)}</strong>
+                </div>
+                <div style={{ color: "white" }}>
+                  {getAlbumDescription(photo?.albumId)}
+                </div>
+              </Col>
+            </Row>
+          </Card.Header>
+          <Card.Body>
             <Link to={`photo/${photo?.id}`}>
               <Card.Img
-                variant="top"
+                variant='top'
                 src={
                   photo?.images?.thumbnail.startsWith("http")
                     ? photo?.images?.thumbnail
                     : "/assets/images/" +
                       (photo?.images?.thumbnail || "logo192.png")
                 }
-                className="my-3"
+                className='my-3'
               />
             </Link>
-          </div>
-          <Card.Text className="text-muted">
-            <OverlayTrigger
-              placement="top"
-              overlay={
-                <Tooltip id={`tooltip-like-${photo?.id}`}>
-                  {getUserNamesWhoLiked(photo?.id) || "No likes yet"}
-                </Tooltip>
-              }
-            >
-              <span>
-                {likesData?.find((like) => like?.photoId === photo?.id)
-                  ?.userIds.length || 0}{" "}
+          </Card.Body>
+          <Card.Footer>
+            <div className='action'>
+              <Card.Text style={{ color: "black" }}>
+                <OverlayTrigger
+                  placement='top'
+                  overlay={
+                    <Tooltip id={`tooltip-like-${photo?.id}`}>
+                      {getUserNamesWhoLiked(photo?.id) || "No likes yet"}
+                    </Tooltip>
+                  }>
+                  <span>
+                    {likesData?.find((like) => like?.photoId === photo?.id)
+                      ?.userIds.length || 0}{" "}
+                    <i
+                      className={
+                        hasLiked(photo?.id) ? "bi bi-heart-fill" : "bi bi-heart"
+                      }></i>{" "}
+                    ·{" "}
+                  </span>
+                </OverlayTrigger>
+                {commentsData?.filter(
+                  (comment) => comment?.photoId === photo?.id
+                ).length || 0}{" "}
+                <i className='bi bi-chat-dots'></i> · 0{" "}
+                <i className='bi bi-share'></i>
+              </Card.Text>
+            </div>
+            <div className='text-center d-flex'>
+              <Button
+                onClick={() => handleLike(photo?.id)}
+                variant={hasLiked(photo?.id) ? "light" : "light"}
+                className='custom-button'>
                 <i
                   className={
-                    hasLiked(photo?.id)
-                      ? "bi bi-heart-fill"
-                      : "bi bi-heart"
-                  }
-                ></i>{" "}
-              </span>
-            </OverlayTrigger>
-            {commentsData?.filter(
-              (comment) => comment?.photoId === photo?.id
-            ).length || 0}{" "}
-            <i className="bi bi-chat-dots"></i> · 0{" "}
-            <i className="bi bi-share"></i>
-          </Card.Text>
-        </Card.Body>
-        <Card.Footer>
-          <div className="text-center d-flex">
-            <Button
-              onClick={() => handleLike(photo?.id)}
-              variant={hasLiked(photo?.id) ? "primary" : "light"}
-              className="w-100 custom-button"
-              style={{ borderRadius: "3px" }}
-            >
-              {hasLiked(photo?.id) ? "Liked" : "Like"}
-            </Button>
+                    hasLiked(photo?.id) ? "bi bi-heart-fill" : "bi bi-heart"
+                  }></i>
+              </Button>
 
-            <Button
-              onClick={() => handleComment(photo?.id)}
-              variant="light"
-              className="w-100 custom-button"
-              style={{ borderRadius: "0" }}
-            >
-              Comment
-            </Button>
+              <Button
+                onClick={() => handleComment(photo?.id)}
+                variant='light'
+                className='custom-button'>
+                <i className='bi bi-chat-dots'></i>
+              </Button>
 
-            <Button
-              variant="light"
-              className="w-100 custom-button"
-              style={{ borderRadius: "0" }}
-              onClick={handleShare}
-            >
-              Share
-            </Button>
-          </div>
-        </Card.Footer>
+              <Button
+                variant='light'
+                className='custom-button'
+                onClick={handleShare}>
+                <i className='bi bi-share'></i>
+              </Button>
+            </div>
+          </Card.Footer>
+        </Card>
       </div>
-    </div>
   );
 }

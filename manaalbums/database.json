@@ -460,6 +460,20 @@
       "rate": 1,
       "userId": 8,
       "id": 17
+    },
+    {
+      "photoId": 6,
+      "text": "ad",
+      "rate": 1,
+      "userId": 8,
+      "id": 18
+    },
+    {
+      "photoId": 1,
+      "text": "da",
+      "rate": 1,
+      "userId": 8,
+      "id": 19
     }
   ],
   "likes": [
@@ -506,6 +520,13 @@
       "photoId": 5,
       "userIds": [],
       "id": 6
+    },
+    {
+      "photoId": 4,
+      "userIds": [
+        8
+      ],
+      "id": 7
     }
   ],
   "shares": [

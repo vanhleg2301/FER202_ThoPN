@@ -37,6 +37,7 @@ export default function ShareFor({
               {users.map((user) => (
                 <Button
                   variant='outline'
+                  key={user?.userId}
                   onClick={() => shareFor(user?.userId)}>
                   <Card className='m-4'>
                     <Card.Img />
