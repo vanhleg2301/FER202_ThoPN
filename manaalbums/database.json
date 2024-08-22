@@ -536,7 +536,9 @@
     },
     {
       "photoId": 5,
-      "userIds": [],
+      "userIds": [
+        9
+      ],
       "id": 6
     },
     {
@@ -549,9 +551,52 @@
   ],
   "shares": [
     {
+      "id": 1,
       "photoId": 1,
       "userId": 1,
       "sharedWithUserIds": 2
+    },
+    {
+      "photoId": 7,
+      "userId": 9,
+      "sharedWithUserIds": 2,
+      "id": 2
+    },
+    {
+      "photoId": 5,
+      "userId": 9,
+      "sharedWithUserIds": 7,
+      "id": 3
+    },
+    {
+      "photoId": 7,
+      "userId": 9,
+      "sharedWithUserIds": 1,
+      "id": 4
+    },
+    {
+      "photoId": 7,
+      "userId": 9,
+      "sharedWithUserIds": 1,
+      "id": 5
+    },
+    {
+      "photoId": 10,
+      "userId": 9,
+      "sharedWithUserIds": 1,
+      "id": 6
+    },
+    {
+      "photoId": 7,
+      "userId": 9,
+      "sharedWithUserIds": 1,
+      "id": 7
+    },
+    {
+      "photoId": 7,
+      "userId": 9,
+      "sharedWithUserIds": 1,
+      "id": 8
     }
   ],
   "chats": [

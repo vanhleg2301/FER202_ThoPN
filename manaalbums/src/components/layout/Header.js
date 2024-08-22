@@ -66,6 +66,9 @@ export default function Header() {
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
+            <Nav.Link as={Link} to='/share' style={{marginRight: 10}}>
+                    <i class="bi bi-share-fill"></i>
+                    </Nav.Link>
             <Nav>
               {isLoggedIn ? (
                 <div className='avatar-menu-wrapper'>
@@ -80,6 +83,7 @@ export default function Header() {
                     />
                   </Link>
                   <div className='avatar-menu'>
+                    
                     <Nav.Link as={Link} to='/auth/profile'>
                       Profile
                     </Nav.Link>

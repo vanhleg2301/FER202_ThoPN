@@ -19,6 +19,7 @@ export default function PhotoCard({
   likesData,
   handleLike,
   handleComment,
+  sharedPhotos,
   users,
   getUserNameByAlbumId,
   getAlbumDescription,
@@ -46,6 +47,12 @@ export default function PhotoCard({
       };
       console.log(shareFor);
       await axios.post("http://localhost:9999/shares", shareFor);
+
+      alert(
+        `Photo shared for ${(
+          users.find((user) => user.userId === userId).name || "Unknown"
+        )} successfully 🎉`
+      );
       // Close modal after sharing
       setShowShareModal(false);
     } catch (error) {
@@ -137,7 +144,9 @@ export default function PhotoCard({
                 {commentsData?.filter(
                   (comment) => comment?.photoId === photo?.id
                 ).length || 0}{" "}
-                <i className='bi bi-chat-dots'></i> · 0{" "}
+                <i className='bi bi-chat-dots'></i> ·{" "}
+                {sharedPhotos?.filter((share) => share?.photoId === photo?.id)
+                  .length || 0}
                 <i className='bi bi-share'></i>
               </Card.Text>
             </div>

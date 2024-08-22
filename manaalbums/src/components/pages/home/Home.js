@@ -17,6 +17,7 @@ export default function Home() {
   const [photos, setPhotos] = useState([]);
   const [likedPhotos, setLikedPhotos] = useState({});
   const [likesData, setLikesData] = useState([]);
+  const [sharedPhotos, setSharedPhotos] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [comments, setComments] = useState([]);
@@ -76,11 +77,21 @@ export default function Home() {
       }
     };
 
+    const fetchShare = async () => {
+      try {
+        const response = await axios.get("http://localhost:9999/shares");
+        setSharedPhotos(response?.data);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
     fetchPhotos();
     fetchUsers();
     fetchAlbums();
     fetchComments();
     fetchLike();
+    fetchShare();
   }, []);
 
   // Xử lý Like
@@ -259,6 +270,7 @@ export default function Home() {
                 likedPhotos={likedPhotos}
                 handleLike={handleLike}
                 handleComment={handleComment}
+                sharedPhotos={sharedPhotos}
                 users={users}
                 getUserNameByAlbumId={getUserNameByAlbumId}
                 getAlbumDescription={getAlbumDescription}

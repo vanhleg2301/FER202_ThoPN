@@ -16,6 +16,7 @@ import ActiveCode from "./components/pages/sign/ActiveCode";
 import PrivateRoute from "./components/router/PrivateRoute";
 import PublicRoute from "./components/router/PublicRoute";
 import Change from "./components/pages/sign/Change";
+import Share from "./components/pages/profile/Share";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path='/photo/:photoId' element={<PhotoDetail />} />
 
             <Route element={<PrivateRoute />}>
+              <Route path='/share' element={<Share />} />
               <Route path='/auth/change-password' element={<Change />} />
               <Route path='/auth/profile' element={<Profile />} />
               <Route path='/album' element={<Album />} />
